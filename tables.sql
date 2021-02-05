@@ -1,21 +1,25 @@
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS tokens;
 DROP TABLE IF EXISTS bans;
 DROP TABLE IF EXISTS stats;
+DROP TABLE IF EXISTS users;
 
-CREATE SEQUENCE IF NOT EXISTS s_user;
-CREATE SEQUENCE IF NOT EXISTS s_token;
+DROP SEQUENCE IF EXISTS s_users;
+DROP SEQUENCE IF EXISTS s_tokens;
 
-CREATE TABLE IF NOT EXISTS users (
-    idUser INTEGER,
+CREATE SEQUENCE IF NOT EXISTS s_users;
+CREATE SEQUENCE IF NOT EXISTS s_tokens;
+
+CREATE TABLE IF NOT EXISTS users
+(
+    idUser   INTEGER,
     username VARCHAR(40),
-    pwd VARCHAR(80),
-    email VARCHAR(50),
-    role CHAR(1) DEFAULT 'U',
+    pwd      VARCHAR(80),
+    email    VARCHAR(50),
+    role     CHAR(1) DEFAULT 'U',
     CONSTRAINT PK_users PRIMARY KEY (idUser),
     CONSTRAINT UC_users_username UNIQUE (username),
     CONSTRAINT UC_users_email UNIQUE (email),
-    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z]'), /* à vérifier */
+    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z]'),
     CONSTRAINT CK_users_email CHECK (email LIKE '%@%.%'),
     CONSTRAINT CK_users_role CHECK (role IN ('A', 'U')),
     CONSTRAINT NN_users_username CHECK (username IS NOT NULL),
@@ -24,41 +28,41 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT NN_users_role CHECK (role IS NOT NULL)
 );
 
-CREATE TABLE IF NOT EXISTS tokens (
-    idToken INTEGER,
-    idUser INTEGER,
-    strToken VARCHAR(80),
+CREATE TABLE IF NOT EXISTS tokens
+(
+    idToken        INTEGER,
+    idUser         INTEGER,
+    strToken       VARCHAR(80),
     expirationDate DATE,
     CONSTRAINT PK_tokens PRIMARY KEY (idToken),
     CONSTRAINT FK_tokens FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
     CONSTRAINT UC_tokens_strToken UNIQUE (strToken),
-    CONSTRAINT CK_tokens_expirationDate CHECK (expirationDate > SYSDATE()),
     CONSTRAINT NN_tokens_strToken CHECK (strToken IS NOT NULL),
     CONSTRAINT NN_tokens_expirationDate CHECK (expirationDate IS NOT NULL)
 );
 
-CREATE TABLE IF NOT EXISTS bans (
+CREATE TABLE IF NOT EXISTS bans
+(
     idUser INTEGER,
     banEnd DATE,
     CONSTRAINT PK_bans PRIMARY KEY (idUser, banEnd),
-    CONSTRAINT FK_bans FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
-    CONSTRAINT CK_bans_banEnd CHECK (banEnd > SYSDATE())
+    CONSTRAINT FK_bans FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS stats
 (
-    idUser INTEGER,
-    nbPoints INTEGER,
-    nbKills INTEGER,
+    idUser      INTEGER,
+    nbPoints    INTEGER,
+    nbKills     INTEGER,
     nbAsteroids INTEGER,
-    nbDeaths INTEGER,
-    nbPowerUps INTEGER,
-    nbGames INTEGER,
-    nbWins INTEGER,
-    maxKills INTEGER,
-    maxPoints INTEGER,
+    nbDeaths    INTEGER,
+    nbPowerUps  INTEGER,
+    nbGames     INTEGER,
+    nbWins      INTEGER,
+    maxKills    INTEGER,
+    maxPoints   INTEGER,
     maxPowerUps INTEGER,
-    maxDeaths INTEGER,
+    maxDeaths   INTEGER,
     CONSTRAINT PK_stats PRIMARY KEY (idUser),
     CONSTRAINT FK_stats FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
     CONSTRAINT CK_stats_nbPoints CHECK (nbPoints >= 0),
@@ -85,15 +89,33 @@ CREATE TABLE IF NOT EXISTS stats
     CONSTRAINT NN_stats_maxDeaths CHECK (maxDeaths IS NOT NULL)
 );
 
+CREATE OR REPLACE trigger t_bans_end_ban
+    AFTER INSERT
+    ON bans
+    FOR EACH ROW
+BEGIN
+    IF NEW.banEnd < NOW() THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Expiration date is not valid';
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER t_expiration_date
+    AFTER INSERT
+    ON tokens
+    FOR EACH ROW
+BEGIN
+    IF NEW.expirationDate < NOW() THEN
+        SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Ban end is not valid';
+    END IF;
+END;
+
 CREATE OR REPLACE PROCEDURE p_clean_tables()
-    BEGIN
-        DELETE FROM bans WHERE banEnd < SYSDATE();
-        DELETE FROM tokens WHERE expirationDate < SYSDATE() + 1;
-    END;
+BEGIN
+    DELETE FROM bans WHERE banEnd < NOW();
+    DELETE FROM tokens WHERE expirationDate < DATE_SUB(NOW(), INTERVAL 1 DAY);
+END;
 
 CREATE OR REPLACE EVENT e_clean_tables
     ON SCHEDULE EVERY 1 DAY
     DO
     CALL p_clean_tables();
-
-
