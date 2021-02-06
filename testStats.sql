@@ -39,6 +39,39 @@ insert into stats values ((select idUser from users where username='test'),0,0,0
 /* maxDeaths >= 0 */
 insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,0,0,0,0,0,-1);
 
+/* nbPoints >= NULL */
+insert into stats values ((select idUser from users where username='test'),NULL,0,0,0,0,0,0,0,0,0,0);
+    
+/* nbKills >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,NULL,0,0,0,0,0,0,0,0,0);
+    
+/* nbAsteroids >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,NULL,0,0,0,0,0,0,0,0);
+    
+/* nbDeaths >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,NULL,0,0,0,0,0,0,0);
+    
+/* nbPowerUps >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,NULL,0,0,0,0,0,0);
+    
+/* nbGames >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,NULL,0,0,0,0,0);
+    
+/* nbWins >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,0,NULL,0,0,0,0);
+
+/* maxKills >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,0,0,NULL,0,0,0);
+
+/* maxPoints >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,0,0,0,NULL,0,0);
+    
+/* maxPowersUps >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,0,0,0,0,NULL,0);
+    
+/* maxDeaths >= NULL */
+insert into stats values ((select idUser from users where username='test'),0,0,0,0,0,0,0,0,0,0,NULL);
+
 /*** Suppression utilisateur de test ***/
 delete from users where username='test';
     
