@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS tokens
     expirationDate DATE,
     CONSTRAINT PK_tokens PRIMARY KEY (idToken),
     CONSTRAINT FK_tokens FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
+    CONSTRAINT NN_tokens_idUser CHECK (idUser IS NOT NULL),
     CONSTRAINT UC_tokens_strToken UNIQUE (strToken),
     CONSTRAINT NN_tokens_strToken CHECK (strToken IS NOT NULL),
     CONSTRAINT NN_tokens_expirationDate CHECK (expirationDate IS NOT NULL)
@@ -95,7 +96,7 @@ CREATE OR REPLACE trigger t_bans_end_ban
     FOR EACH ROW
 BEGIN
     IF NEW.banEnd < NOW() THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Expiration date is not valid';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ban end is not valid';
     END IF;
 END;
 
@@ -105,7 +106,7 @@ CREATE OR REPLACE TRIGGER t_expiration_date
     FOR EACH ROW
 BEGIN
     IF NEW.expirationDate < NOW() THEN
-        SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Ban end is not valid';
+        SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Expiration date is not valid';
     END IF;
 END;
 
