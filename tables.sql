@@ -1,17 +1,3 @@
-DROP TABLE IF EXISTS tokens;
-DROP TABLE IF EXISTS servers;
-DROP TABLE IF EXISTS bans;
-DROP TABLE IF EXISTS stats;
-DROP TABLE IF EXISTS users;
-
-DROP SEQUENCE IF EXISTS s_users;
-DROP SEQUENCE IF EXISTS s_servers;
-DROP SEQUENCE IF EXISTS s_tokens;
-
-CREATE SEQUENCE IF NOT EXISTS s_users;
-DROP SEQUENCE IF EXISTS s_servers;
-CREATE SEQUENCE IF NOT EXISTS s_tokens;
-
 CREATE TABLE IF NOT EXISTS users
 (
     idUser   INTEGER,
@@ -68,17 +54,17 @@ CREATE TABLE IF NOT EXISTS bans
 CREATE TABLE IF NOT EXISTS stats
 (
     idUser      INTEGER,
-    nbPoints    INTEGER,
-    nbKills     INTEGER,
-    nbAsteroids INTEGER,
-    nbDeaths    INTEGER,
-    nbPowerUps  INTEGER,
-    nbGames     INTEGER,
-    nbWins      INTEGER,
-    maxKills    INTEGER,
-    maxPoints   INTEGER,
-    maxPowerUps INTEGER,
-    maxDeaths   INTEGER,
+    nbPoints    INTEGER DEFAULT 0,
+    nbKills     INTEGER DEFAULT 0,
+    nbAsteroids INTEGER DEFAULT 0,
+    nbDeaths    INTEGER DEFAULT 0,
+    nbPowerUps  INTEGER DEFAULT 0,
+    nbGames     INTEGER DEFAULT 0,
+    nbWins      INTEGER DEFAULT 0,
+    maxKills    INTEGER DEFAULT 0,
+    maxPoints   INTEGER DEFAULT 0,
+    maxPowerUps INTEGER DEFAULT 0,
+    maxDeaths   INTEGER DEFAULT 0,
     CONSTRAINT PK_stats PRIMARY KEY (idUser),
     CONSTRAINT FK_stats FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
     CONSTRAINT CK_stats_nbPoints CHECK (nbPoints >= 0),
@@ -104,54 +90,3 @@ CREATE TABLE IF NOT EXISTS stats
     CONSTRAINT NN_stats_maxPowerUps CHECK (maxPowerUps IS NOT NULL),
     CONSTRAINT NN_stats_maxDeaths CHECK (maxDeaths IS NOT NULL)
 );
-
-DELIMITER //
-CREATE OR REPLACE trigger t_bans_end_ban
-    AFTER INSERT
-    ON bans
-    FOR EACH ROW
-BEGIN
-    IF NEW.banEnd < NOW() THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ban end is not valid';
-    END IF;
-END;
-//
-DELIMITER
-
-DELIMITER //
-CREATE OR REPLACE TRIGGER t_expiration_date
-    AFTER INSERT
-    ON tokens
-    FOR EACH ROW
-BEGIN
-    IF NEW.expirationDate < NOW() THEN
-        SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Expiration date is not valid';
-    END IF;
-END;
-//
-DELIMITER
-
-DELIMITER //
-CREATE OR REPLACE trigger t_insert_user_stats
-    AFTER INSERT
-    ON users
-    FOR EACH ROW
-BEGIN
-    INSERT INTO stats VALUES (NEW.idUser, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-END;
-//
-DELIMITER
-
-DELIMITER //
-CREATE OR REPLACE PROCEDURE p_clean_tables()
-BEGIN
-    DELETE FROM bans WHERE banEnd < NOW();
-    DELETE FROM tokens WHERE expirationDate < DATE_SUB(NOW(), INTERVAL 1 DAY);
-END;
-//
-DELIMITER
-
-CREATE OR REPLACE EVENT e_clean_tables
-    ON SCHEDULE EVERY 1 DAY
-    DO
-    CALL p_clean_tables();
