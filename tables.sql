@@ -115,6 +115,16 @@ END; //
 DELIMITER
 
 DELIMITER //
+CREATE OR REPLACE trigger insert_new_stats
+    AFTER INSERT
+    ON users
+    FOR EACH ROW
+BEGIN
+    INSERT INTO stats VALUES (NEW.idUser,0,0,0,0,0,0,0,0,0,0,0) ;
+END; //
+DELIMITER
+
+DELIMITER //
 CREATE OR REPLACE PROCEDURE p_clean_tables()
 BEGIN
     DELETE FROM bans WHERE banEnd < NOW();
