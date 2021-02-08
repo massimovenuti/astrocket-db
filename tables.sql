@@ -1,12 +1,15 @@
 DROP TABLE IF EXISTS tokens;
+DROP TABLE IF EXISTS servers;
 DROP TABLE IF EXISTS bans;
 DROP TABLE IF EXISTS stats;
 DROP TABLE IF EXISTS users;
 
 DROP SEQUENCE IF EXISTS s_users;
+DROP SEQUENCE IF EXISTS s_servers;
 DROP SEQUENCE IF EXISTS s_tokens;
 
 CREATE SEQUENCE IF NOT EXISTS s_users;
+DROP SEQUENCE IF EXISTS s_servers;
 CREATE SEQUENCE IF NOT EXISTS s_tokens;
 
 CREATE TABLE IF NOT EXISTS users
@@ -26,6 +29,18 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT NN_users_pwd CHECK (pwd IS NOT NULL),
     CONSTRAINT NN_users_email CHECK (email IS NOT NULL),
     CONSTRAINT NN_users_role CHECK (role IS NOT NULL)
+);
+
+CREATE TABLE IF NOT EXISTS servers
+(
+    idServer    INTEGER,
+    serverName  VARCHAR(40),
+    serverToken VARCHAR(150),
+    CONSTRAINT PK_servers PRIMARY KEY (idServer),
+    CONSTRAINT UC_servers_serverName UNIQUE (serverName),
+    CONSTRAINT UC_servers_serverToken UNIQUE (serverToken),
+    CONSTRAINT NN_servers_serverName CHECK (serverName IS NOT NULL),
+    CONSTRAINT NN_servers_serverToken CHECK (serverToken IS NOT NULL)
 );
 
 CREATE TABLE IF NOT EXISTS tokens
@@ -99,7 +114,8 @@ BEGIN
     IF NEW.banEnd < NOW() THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ban end is not valid';
     END IF;
-END; //
+END;
+//
 DELIMITER
 
 DELIMITER //
@@ -111,17 +127,19 @@ BEGIN
     IF NEW.expirationDate < NOW() THEN
         SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Expiration date is not valid';
     END IF;
-END; //
+END;
+//
 DELIMITER
 
 DELIMITER //
-CREATE OR REPLACE trigger insert_new_stats
+CREATE OR REPLACE trigger t_insert_user_stats
     AFTER INSERT
     ON users
     FOR EACH ROW
 BEGIN
-    INSERT INTO stats VALUES (NEW.idUser,0,0,0,0,0,0,0,0,0,0,0) ;
-END; //
+    INSERT INTO stats VALUES (NEW.idUser, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+END;
+//
 DELIMITER
 
 DELIMITER //
@@ -129,7 +147,8 @@ CREATE OR REPLACE PROCEDURE p_clean_tables()
 BEGIN
     DELETE FROM bans WHERE banEnd < NOW();
     DELETE FROM tokens WHERE expirationDate < DATE_SUB(NOW(), INTERVAL 1 DAY);
-END; //
+END;
+//
 DELIMITER
 
 CREATE OR REPLACE EVENT e_clean_tables
