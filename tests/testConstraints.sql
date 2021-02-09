@@ -3,46 +3,144 @@
  ***/
 
 /* username NULL */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), NULL, 'pwd', 'email@email.email', 'U');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_username()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test username null : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), NULL, 'pwd', 'email@email.email', 'U');
+END;
+//
+DELIMITER
 
 /* username not unique */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email1', 'U');
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email2', 'U');
-delete
-from users
-where username = 'username';
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notunique_username()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1169
+        BEGIN
+            SELECT 'Test username not unique : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email1', 'U');
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email2', 'U');
+        delete
+        from users
+        where username = 'username';
+END;
+//
+DELIMITER
 
 /* username starts with number */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), '1username', 'pwd', 'email@email.email', 'U');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_startnumber_username()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 
+        BEGIN
+            SELECT 'Test username start with number : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), '1username', 'pwd', 'email@email.email', 'U');
+END;
+//
+DELIMITER
 
 /* pwd NULL */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username', NULL, 'email@email.email', 'U');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_pwd()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test pwd null : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username', NULL, 'email@email.email', 'U');
+END;
+//
+DELIMITER
 
 /* email NULL */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username', 'pwd', NULL, 'U');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_email()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test email null : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username', 'pwd', NULL, 'U');
+END;
+//
+DELIMITER
 
 /* email not unique */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username1', 'pwd', 'email@email.email', 'U');
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username2', 'pwd', 'email@email.email', 'U');
-delete
-from users
-where username = 'username1';
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notunique_email()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 1169
+        BEGIN
+            SELECT 'Test email not unique : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username1', 'pwd', 'email@email.email', 'U');
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username2', 'pwd', 'email@email.email', 'U');
+        delete
+        from users
+        where username = 'username1';
+END;
+//
+DELIMITER
 
 /* email not like ‘%@%.%’ */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username', 'pwd', 'email', 'U');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notlike_email()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 
+        BEGIN
+            SELECT 'Test email regex : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username', 'pwd', 'email', 'U');
+END;
+//
+DELIMITER
 
 /* role NULL */
-insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email', NULL);
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_role()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test role null : OK';
+        END;
+
+        insert into users (idUser, username, pwd, email, role)
+        values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email', NULL);
+END;
+//
+DELIMITER
 
 
 /***
