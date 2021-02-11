@@ -19,6 +19,15 @@ where username = 'username';
 insert into users (idUser, username, pwd, email, role)
 values (NEXTVAL(s_users), '1username', 'pwd', 'email@email.email', 'U');
 
+/* username with space */
+insert into users (idUser, username, pwd, email, role)
+values (NEXTVAL(s_users), 'user name', 'pwd', 'email@email.email', 'U');
+
+/* valid complex username */
+insert into users (idUser, username, pwd, email, role)
+values (1, 'usE1rna2Me3', 'pwd', 'email@email.email', 'U');
+delete from users where idUser = 1;
+
 /* pwd NULL */
 insert into users (idUser, username, pwd, email, role)
 values (NEXTVAL(s_users), 'username', NULL, 'email@email.email', 'U');
@@ -39,6 +48,11 @@ where username = 'username1';
 /* email not like ‘%@%.%’ */
 insert into users (idUser, username, pwd, email, role)
 values (NEXTVAL(s_users), 'username', 'pwd', 'email', 'U');
+
+/* valid complex email */
+insert into users (idUser, username, pwd, email, role)
+values (1, 'username2', 'pwd', 'em.a.il1@23em-ail.email', 'U');
+delete from users where idUser = 1;
 
 /* role NULL */
 insert into users (idUser, username, pwd, email, role)
