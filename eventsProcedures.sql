@@ -6,7 +6,7 @@ BEGIN
     END IF;
 END;
 //
-DELIMITER
+
 
 DELIMITER //
 CREATE OR REPLACE PROCEDURE p_clean_tables()
@@ -15,7 +15,7 @@ BEGIN
     DELETE FROM tokens WHERE expirationDate < DATE_SUB(NOW(), INTERVAL 1 DAY);
 END;
 //
-DELIMITER
+
 
 CREATE OR
     REPLACE EVENT e_clean_tables

@@ -6,110 +6,114 @@
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_username()
 BEGIN
-        DECLARE CONTINUE HANDLER 
+        DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
-            SELECT 'Test username null : OK';
+            SELECT 'Test username null : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), NULL, 'pwd', 'email@email.email', 'U');
+        values (1, NULL, 'pwd', 'email@email.email', 'U');
+        delete from users where idUser=1;
 END;
 //
-DELIMITER
+
 
 /* username not unique */
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notunique_username()
 BEGIN
 
-        DECLARE CONTINUE HANDLER 
-                FOR 1169
+        DECLARE EXIT HANDLER 
+                FOR 1062
         BEGIN
-            SELECT 'Test username not unique : OK';
+            SELECT 'Test username not unique : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email1', 'U');
+        values (1, 'username', 'pwd', 'email@email.email1', 'U');
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email2', 'U');
+        values (2, 'username', 'pwd', 'email@email.email2', 'U');
         delete
         from users
         where username = 'username';
 END;
 //
-DELIMITER
+
 
 /* username starts with number */
+/*
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_startnumber_username()
 BEGIN
         DECLARE CONTINUE HANDLER 
                 FOR 
         BEGIN
-            SELECT 'Test username start with number : OK';
+            SELECT 'Test username start with number : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), '1username', 'pwd', 'email@email.email', 'U');
+        values (1, '1username', 'pwd', 'email@email.email', 'U');
 END;
 //
-DELIMITER
+*/
+
 
 /* pwd NULL */
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_pwd()
 BEGIN
-        DECLARE CONTINUE HANDLER 
+        DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
-            SELECT 'Test pwd null : OK';
+            SELECT 'Test pwd null : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username', NULL, 'email@email.email', 'U');
+        values (1, 'username', NULL, 'email@email.email', 'U');
 END;
 //
-DELIMITER
+
 
 /* email NULL */
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_email()
 BEGIN
-        DECLARE CONTINUE HANDLER 
+        DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
-            SELECT 'Test email null : OK';
+            SELECT 'Test email null : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username', 'pwd', NULL, 'U');
+        values (1, 'username', 'pwd', NULL, 'U');
 END;
 //
-DELIMITER
+
 
 /* email not unique */
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notunique_email()
 BEGIN
-        DECLARE CONTINUE HANDLER 
-                FOR 1169
+        DECLARE EXIT HANDLER 
+                FOR 1062
         BEGIN
-            SELECT 'Test email not unique : OK';
+            SELECT 'Test email not unique : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username1', 'pwd', 'email@email.email', 'U');
+        values (1, 'username1', 'pwd', 'email@email.email', 'U');
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username2', 'pwd', 'email@email.email', 'U');
+        values (1, 'username2', 'pwd', 'email@email.email', 'U');
         delete
         from users
         where username = 'username1';
 END;
 //
-DELIMITER
+
 
 /* email not like ‘%@%.%’ */
+/*
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notlike_email()
 BEGIN
@@ -120,10 +124,11 @@ BEGIN
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username', 'pwd', 'email', 'U');
+        values (1, 'username', 'pwd', 'email', 'U');
 END;
 //
-DELIMITER
+*/
+
 
 /* role NULL */
 DELIMITER //
@@ -133,15 +138,13 @@ BEGIN
         DECLARE CONTINUE HANDLER 
                 FOR 1048
         BEGIN
-            SELECT 'Test role null : OK';
+            SELECT 'Test role null : OK' as '';
         END;
 
         insert into users (idUser, username, pwd, email, role)
-        values (NEXTVAL(s_users), 'username', 'pwd', 'email@email.email', NULL);
+        values (1, 'username', 'pwd', 'email@email.email', NULL);
 END;
 //
-DELIMITER
-
 
 /***
  Servers
@@ -180,7 +183,7 @@ WHERE idServer = 0;
 
 /* idToken NULL */
 insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'test', 'pwd', 'email@email.email', 'U');
+values (1, 'test', 'pwd', 'email@email.email', 'U');
 insert into tokens (idToken, idUser, strToken, expirationDate)
 values (NULL, 1, 'eyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
 delete
@@ -193,7 +196,7 @@ values (NEXTVAL(s_tokens), NULL, 'fyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OT
 
 /*** INSERT pour tester les conditions suivantes ***/
 insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'test', 'pwd', 'email@email.email', 'U');
+values (1, 'test', 'pwd', 'email@email.email', 'U');
 
 /* strToken not unique */
 insert into tokens (idToken, idUser, strToken, expirationDate)
@@ -227,7 +230,7 @@ where username = 'test';
 
 /*** Utilisateur de test ***/
 insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'test', 'pwd', 'email@email.email', 'U');
+values (1, 'test', 'pwd', 'email@email.email', 'U');
 
 /* idUser NULL */
 insert into bans (idUser, banEnd)
@@ -249,7 +252,7 @@ where username = 'test';
 
 /*** Utilisateur de test ***/
 insert into users (idUser, username, pwd, email, role)
-values (NEXTVAL(s_users), 'test', 'pwd', 'email@email.email', 'U');
+values (1, 'test', 'pwd', 'email@email.email', 'U');
 
 /* idUser not null */
 insert into stats
@@ -348,3 +351,7 @@ values ((select idUser from users where username = 'test'), 0, 0, 0, 0, 0, 0, 0,
 delete
 from users
 where username = 'test';
+
+
+
+

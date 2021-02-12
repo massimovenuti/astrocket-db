@@ -1,20 +1,16 @@
 CREATE TABLE IF NOT EXISTS users
 (
     idUser   INTEGER,
-    username VARCHAR(40),
-    pwd      VARCHAR(80),
-    email    VARCHAR(50),
-    role     CHAR(1) DEFAULT 'U',
+    username VARCHAR(40) NOT NULL,
+    pwd      VARCHAR(80) NOT NULL,
+    email    VARCHAR(50) NOT NULL,
+    role     CHAR(1) DEFAULT 'U' NOT NULL,
     CONSTRAINT PK_users PRIMARY KEY (idUser),
     CONSTRAINT UC_users_username UNIQUE (username),
     CONSTRAINT UC_users_email UNIQUE (email),
-    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z]'),
-    CONSTRAINT CK_users_email CHECK (email LIKE '%@%.%'),
-    CONSTRAINT CK_users_role CHECK (role IN ('A', 'U')),
-    CONSTRAINT NN_users_username CHECK (username IS NOT NULL),
-    CONSTRAINT NN_users_pwd CHECK (pwd IS NOT NULL),
-    CONSTRAINT NN_users_email CHECK (email IS NOT NULL),
-    CONSTRAINT NN_users_role CHECK (role IS NOT NULL)
+    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z]$'),
+    CONSTRAINT CK_users_email CHECK (email REGEXP '^%@%.%$'),
+    CONSTRAINT CK_users_role CHECK (role IN ('A', 'U'))
 );
 
 CREATE TABLE IF NOT EXISTS servers

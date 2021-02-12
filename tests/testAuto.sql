@@ -1,28 +1,28 @@
-select '--| Début du processus de test |--';
-select '--- Test sur la table users ---'
+select '--| Début du processus de test |--' as '';
+select '--- Test sur la table users ---' as '';
 
-select ' Username null : '
+select ' Username null : ' as '';
 call test_null_username();
 
-select ' Username not unique : '
+select ' Username not unique : ' as '';
 call test_notunique_username();
 
-select ' Username start with a number : '
-call test_startnumber_username();
+/*select ' Username start with a number : ' as '';
+call test_startnumber_username();*/
 
-select ' Pwd null : '
+select ' Pwd null : ' as '';
 call test_null_pwd();
 
-select ' Email null : '
+select ' Email null : ' as '';
 call test_null_email();
 
-select ' Email not unique : '
+select ' Email not unique : ' as '';
 call test_notunique_email();
 
-select ' Email regex : '
-call test_notlike_email();
+/*select ' Email regex : ' as '';
+call test_notlike_email();*/
 
-select ' Role null : '
+select ' Role null : ' as '';
 call test_null_role();
 
-select '--| Fin de processus de test |--'
+select '--| Fin de processus de test |--' as '';

@@ -5,7 +5,7 @@ CREATE OR REPLACE trigger i_bans
     FOR EACH ROW
     CALL p_check_ban_end(NEW.banEnd);
 //
-DELIMITER
+
 
 DELIMITER //
 CREATE OR REPLACE trigger u_bans
@@ -14,7 +14,7 @@ CREATE OR REPLACE trigger u_bans
     FOR EACH ROW
     CALL p_check_ban_end(NEW.banEnd);
 //
-DELIMITER
+
 
 DELIMITER //
 CREATE OR REPLACE TRIGGER i_tokens
@@ -27,7 +27,7 @@ BEGIN
     END IF;
 END;
 //
-DELIMITER
+
 
 DELIMITER //
 CREATE OR REPLACE trigger i_users
@@ -38,4 +38,4 @@ BEGIN
     INSERT INTO stats (idUser) VALUES (NEW.idUser);
 END;
 //
-DELIMITER
+
