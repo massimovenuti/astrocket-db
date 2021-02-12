@@ -16,13 +16,11 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS servers
 (
     idServer    INTEGER,
-    serverName  VARCHAR(40),
-    serverToken VARCHAR(150),
+    serverName  VARCHAR(40) NOT NULL,
+    serverToken VARCHAR(150) NOT NULL,
     CONSTRAINT PK_servers PRIMARY KEY (idServer),
     CONSTRAINT UC_servers_serverName UNIQUE (serverName),
-    CONSTRAINT UC_servers_serverToken UNIQUE (serverToken),
-    CONSTRAINT NN_servers_serverName CHECK (serverName IS NOT NULL),
-    CONSTRAINT NN_servers_serverToken CHECK (serverToken IS NOT NULL)
+    CONSTRAINT UC_servers_serverToken UNIQUE (serverToken)
 );
 
 CREATE TABLE IF NOT EXISTS tokens

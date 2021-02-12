@@ -151,30 +151,81 @@ END;
  ***/
 
 /* serverToken NULL */
-INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (0, 'serverName', NULL);
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_serverToken()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test serverToken null : OK' as '';
+        END;
+
+        INSERT INTO servers (idServer, serverName, serverToken)
+        VALUES (0, 'serverName', NULL);
+END;
+//
+
+
 
 /* serverToken not unique */
-INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (0, 'serverName1', 'serverToken');
-INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (1, 'serverName2', 'serverToken');
-DELETE
-FROM servers
-WHERE idServer = 0;
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notunique_serverToken()
+BEGIN
+        DECLARE EXIT HANDLER 
+                FOR 1062
+        BEGIN
+            SELECT 'Test serverToken not unique : OK' as '';
+        END;
+
+        INSERT INTO servers (idServer, serverName, serverToken)
+        VALUES (0, 'serverName1', 'serverToken');
+        INSERT INTO servers (idServer, serverName, serverToken)
+        VALUES (1, 'serverName2', 'serverToken');
+        DELETE
+        FROM servers
+        WHERE idServer = 0;
+END;
+//
+
 
 /* serverName NULL */
-INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (0, NULL, 'serverToken');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_serverName()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test serverName null : OK' as '';
+        END;
+
+        INSERT INTO servers (idServer, serverName, serverToken)
+        VALUES (0, NULL, 'serverToken');
+END;
+//
+
 
 /* serverName not unique */
-INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (0, 'serverName', 'serverToken1');
-INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (1, 'serverName', 'serverToken2');
-DELETE
-FROM servers
-WHERE idServer = 0;
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notunique_serverName()
+BEGIN
+        DECLARE EXIT HANDLER 
+                FOR 1062
+        BEGIN
+            SELECT 'Test serverName not unique : OK' as '';
+        END;
+
+        INSERT INTO servers (idServer, serverName, serverToken)
+        VALUES (0, 'serverName', 'serverToken1');
+        INSERT INTO servers (idServer, serverName, serverToken)
+        VALUES (1, 'serverName', 'serverToken2');
+        DELETE
+        FROM servers
+        WHERE idServer = 0;
+END;
+//
+
 
 
 /***

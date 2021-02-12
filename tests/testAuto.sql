@@ -25,4 +25,18 @@ call test_notlike_email();*/
 select ' Role null : ' as '';
 call test_null_role();
 
+select '--- Test sur la table servers ---' as '';
+
+select ' servName null : ' as '';
+call test_null_serverName();
+
+select ' servName not unique : ' as '';
+call test_notunique_serverName();
+
+select ' serverToken null : ' as '';
+call test_null_serverToken();
+
+select ' serverToken not unique : ' as '';
+call test_notunique_serverToken();
+
 select '--| Fin de processus de test |--' as '';
