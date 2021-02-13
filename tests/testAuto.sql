@@ -39,4 +39,31 @@ call test_null_serverToken();
 select ' serverToken not unique : ' as '';
 call test_notunique_serverToken();
 
+
+select '--- Test sur la table tokens ---' as '';
+
+/*** INSERT pour tester les conditions suivantes ***/
+insert into users (idUser, username, pwd, email, role)
+values (1, 'test', 'pwd', 'email@email.email', 'U');
+
+select ' idUser null : ' as '';
+call test_null_idUser();
+
+select ' idToken null : ' as '';
+call test_null_idToken();
+
+select ' strToken not unique : ' as '';
+call test_notunique_strToken();
+
+select ' expirationDate null : ' as '';
+call test_null_expirationDate();
+
+select ' strToken null : ' as '';
+call test_null_strToken();
+
+/*** Suppression utilisateur de test ***/
+delete
+from users
+where username = 'test';
+
 select '--| Fin de processus de test |--' as '';

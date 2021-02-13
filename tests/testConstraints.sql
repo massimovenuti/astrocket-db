@@ -6,7 +6,7 @@
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_username()
 BEGIN
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1048
         BEGIN
             SELECT 'Test username null : OK' as '';
@@ -24,7 +24,7 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notunique_username()
 BEGIN
 
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1062
         BEGIN
             SELECT 'Test username not unique : OK' as '';
@@ -63,7 +63,7 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_pwd()
 BEGIN
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1048
         BEGIN
             SELECT 'Test pwd null : OK' as '';
@@ -79,7 +79,7 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_email()
 BEGIN
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1048
         BEGIN
             SELECT 'Test email null : OK' as '';
@@ -95,7 +95,7 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notunique_email()
 BEGIN
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1062
         BEGIN
             SELECT 'Test email not unique : OK' as '';
@@ -172,7 +172,7 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notunique_serverToken()
 BEGIN
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1062
         BEGIN
             SELECT 'Test serverToken not unique : OK' as '';
@@ -210,7 +210,7 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notunique_serverName()
 BEGIN
-        DECLARE EXIT HANDLER 
+        DECLARE CONTINUE HANDLER 
                 FOR 1062
         BEGIN
             SELECT 'Test serverName not unique : OK' as '';
@@ -233,47 +233,95 @@ END;
  ***/
 
 /* idToken NULL */
-insert into users (idUser, username, pwd, email, role)
-values (1, 'test', 'pwd', 'email@email.email', 'U');
-insert into tokens (idToken, idUser, strToken, expirationDate)
-values (NULL, 1, 'eyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
-delete
-from users
-where username = 'test';
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_idToken()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test idToken null : OK' as '';
+        END;
+
+        insert into tokens (idToken, idUser, strToken, expirationDate)
+        values (NULL, 1, 'eyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+END;
+//
+
 
 /* idUser NULL */
-insert into tokens (idToken, idUser, strToken, expirationDate)
-values (NEXTVAL(s_tokens), NULL, 'fyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_idUser()
+BEGIN
 
-/*** INSERT pour tester les conditions suivantes ***/
-insert into users (idUser, username, pwd, email, role)
-values (1, 'test', 'pwd', 'email@email.email', 'U');
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test idUser null : OK' as '';
+        END;
+
+        insert into tokens (idToken, idUser, strToken, expirationDate)
+        values (1, NULL, 'fyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+END;
+//
+
 
 /* strToken not unique */
-insert into tokens (idToken, idUser, strToken, expirationDate)
-values (NEXTVAL(s_tokens), (select idUser from users where username = 'test'),
-        'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
-insert into tokens (idToken, idUser, strToken, expirationDate)
-values (NEXTVAL(s_tokens), (select idUser from users where username = 'test'),
-        'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
-delete
-from tokens
-where strToken = 'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ';
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notunique_strToken()
+BEGIN
+        DECLARE CONTINUE HANDLER 
+                FOR 1062
+        BEGIN
+            SELECT 'Test strToken not unique : OK' as '';
+        END;
+
+        insert into tokens (idToken, idUser, strToken, expirationDate)
+        values (1, (select idUser from users where username = 'test'),
+                'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+        insert into tokens (idToken, idUser, strToken, expirationDate)
+        values (2, (select idUser from users where username = 'test'),
+                'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+        delete
+        from tokens
+        where idToken = 1;
+END;
+//
+
 
 /* expirationDate NULL */
-insert into tokens (idToken, idUser, strToken, expirationDate)
-values (NEXTVAL(s_tokens), (select idUser from users where username = 'test'),
-        'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', NULL);
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_expirationDate()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test expirationDate null : OK' as '';
+        END;
+
+        insert into tokens (idToken, idUser, strToken, expirationDate)
+        values (1, (select idUser from users where username = 'test'),
+                'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', NULL);
+END;
+//
+
 
 /* strToken NULL */
-insert into tokens (idToken, idUser, strToken, expirationDate)
-values (NEXTVAL(s_tokens), (select idUser from users where username = 'test'), NULL, "2022-02-06");
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_strToken()
+BEGIN
 
-/*** Suppression utilisateur de test ***/
-delete
-from users
-where username = 'test';
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test strToken null : OK' as '';
+        END;
 
+        insert into tokens (idToken, idUser, strToken, expirationDate)
+        values (1, (select idUser from users where username = 'test'), NULL, "2022-02-06");
+END;
+//
 
 /***
  Bans

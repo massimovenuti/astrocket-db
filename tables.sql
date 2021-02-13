@@ -26,15 +26,12 @@ CREATE TABLE IF NOT EXISTS servers
 CREATE TABLE IF NOT EXISTS tokens
 (
     idToken        INTEGER,
-    idUser         INTEGER,
-    strToken       VARCHAR(80),
-    expirationDate DATE,
+    idUser         INTEGER NOT NULL,
+    strToken       VARCHAR(80) NOT NULL,
+    expirationDate DATE NOT NULL,
     CONSTRAINT PK_tokens PRIMARY KEY (idToken),
     CONSTRAINT FK_tokens FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
-    CONSTRAINT NN_tokens_idUser CHECK (idUser IS NOT NULL),
-    CONSTRAINT UC_tokens_strToken UNIQUE (strToken),
-    CONSTRAINT NN_tokens_strToken CHECK (strToken IS NOT NULL),
-    CONSTRAINT NN_tokens_expirationDate CHECK (expirationDate IS NOT NULL)
+    CONSTRAINT UC_tokens_strToken UNIQUE (strToken)
 );
 
 CREATE TABLE IF NOT EXISTS bans
