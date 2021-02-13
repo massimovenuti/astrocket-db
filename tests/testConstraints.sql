@@ -327,23 +327,38 @@ END;
  Bans
  ***/
 
-/*** Utilisateur de test ***/
-insert into users (idUser, username, pwd, email, role)
-values (1, 'test', 'pwd', 'email@email.email', 'U');
-
 /* idUser NULL */
-insert into bans (idUser, banEnd)
-values (NULL, "2022-02-06");
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_idUserBan()
+BEGIN
+
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test idUser null : OK' as '';
+        END;
+
+        insert into bans (idUser, banEnd)
+        values (NULL, "2022-02-06");
+END;
+//
+
 
 /* banEnd NULL */
-insert into bans (idUser, banEnd)
-values ((select idUser from users where username = 'test'), NULL);
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_null_banEnd()
+BEGIN
 
-/*** Suppression utilisateur de test ***/
-delete
-from users
-where username = 'test';
+        DECLARE CONTINUE HANDLER 
+                FOR 1048
+        BEGIN
+            SELECT 'Test banEnd null : OK' as '';
+        END;
 
+        insert into bans (idUser, banEnd)
+        values ((select idUser from users where username = 'test'), NULL);
+END;
+//
 
 /***
   Stats

@@ -61,6 +61,17 @@ call test_null_expirationDate();
 select ' strToken null : ' as '';
 call test_null_strToken();
 
+
+
+select '--- Test sur la table bans ---' as '';
+
+select ' idUser ban null : ' as '';
+call test_null_idUserBan();
+
+select ' banEnd null : ' as '';
+call test_null_banEnd();
+
+
 /*** Suppression utilisateur de test ***/
 delete
 from users
