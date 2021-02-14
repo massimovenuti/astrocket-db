@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    idUser   INTEGER,
+    idUser INTEGER,
     username VARCHAR(40) NOT NULL,
     pwd      VARCHAR(80) NOT NULL,
     email    VARCHAR(50) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS servers
 (
-    idServer    INTEGER,
+    idServer INTEGER,
     serverName  VARCHAR(40) NOT NULL,
     serverToken VARCHAR(150) NOT NULL,
     CONSTRAINT PK_servers PRIMARY KEY (idServer),
@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS servers
 
 CREATE TABLE IF NOT EXISTS tokens
 (
-    idToken        INTEGER,
-    idUser         INTEGER NOT NULL,
+    idToken     INTEGER,
+    idUser      INTEGER NOT NULL,
     strToken       VARCHAR(80) NOT NULL,
     expirationDate DATE NOT NULL,
     CONSTRAINT PK_tokens PRIMARY KEY (idToken),
@@ -44,40 +44,39 @@ CREATE TABLE IF NOT EXISTS bans
 
 CREATE TABLE IF NOT EXISTS stats
 (
-    idUser      INTEGER,
-    nbPoints    INTEGER DEFAULT 0,
-    nbKills     INTEGER DEFAULT 0,
-    nbAsteroids INTEGER DEFAULT 0,
-    nbDeaths    INTEGER DEFAULT 0,
-    nbPowerUps  INTEGER DEFAULT 0,
-    nbGames     INTEGER DEFAULT 0,
-    nbWins      INTEGER DEFAULT 0,
-    maxKills    INTEGER DEFAULT 0,
-    maxPoints   INTEGER DEFAULT 0,
-    maxPowerUps INTEGER DEFAULT 0,
-    maxDeaths   INTEGER DEFAULT 0,
+    idUser INTEGER,
+    nbPoints INTEGER NOT NULL,
+        CONSTRAINT CK_stats_nbPoints 
+        CHECK (nbPoints >= 0,
+    nbKills INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_nbKills 
+        CHECK (nbKills >= 0 or nbKills IS NULL),
+    nbAsteroids INTEGER NOT NULL,
+        CONSTRAINT CK_stats_nbAsteroids 
+        CHECK (nbAsteroids >= 0 or nbAsteroids IS NULL), 
+    nbDeaths INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_nbDeaths 
+        CHECK (nbDeaths >= 0 or nbDeaths IS NULL),
+    nbPowerUps INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_nbPowerUps 
+        CHECK (nbPowerUps >= 0 or nbPowerUps IS NULL),
+    nbGames INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_nbGames 
+        CHECK (nbGames >= 0),
+    nbWins INTEGER NOT NULL,
+        CONSTRAINT CK_stats_nbWins 
+        CHECK (nbWins >= 0),
+    maxKills INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_maxKills 
+        CHECK (maxKills >= 0),
+    maxPoints INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_maxPoints 
+        CHECK (maxPoints >= 0),
+    maxPowerUps INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_maxPowerUps 
+        CHECK (maxPowerUps >= 0),
+    maxDeaths INTEGER NOT NULL, 
+        CONSTRAINT CK_stats_maxDeaths CHECK (maxDeaths >= 0 or maxDeaths IS NULL),
     CONSTRAINT PK_stats PRIMARY KEY (idUser),
-    CONSTRAINT FK_stats FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
-    CONSTRAINT CK_stats_nbPoints CHECK (nbPoints >= 0),
-    CONSTRAINT CK_stats_nbKills CHECK (nbKills >= 0),
-    CONSTRAINT CK_stats_nbAsteroids CHECK (nbAsteroids >= 0),
-    CONSTRAINT CK_stats_nbDeaths CHECK (nbDeaths >= 0),
-    CONSTRAINT CK_stats_nbPowerUps CHECK (nbPowerUps >= 0),
-    CONSTRAINT CK_stats_nbGames CHECK (nbGames >= 0),
-    CONSTRAINT CK_stats_nbWins CHECK (nbWins >= 0),
-    CONSTRAINT CK_stats_maxKills CHECK (maxKills >= 0),
-    CONSTRAINT CK_stats_maxPoints CHECK (maxPoints >= 0),
-    CONSTRAINT CK_stats_maxPowerUps CHECK (maxPowerUps >= 0),
-    CONSTRAINT CK_stats_maxDeaths CHECK (maxDeaths >= 0),
-    CONSTRAINT NN_stats_nbPoints CHECK (nbPoints IS NOT NULL),
-    CONSTRAINT NN_stats_nbKills CHECK (nbKills IS NOT NULL),
-    CONSTRAINT NN_stats_nbAsteroids CHECK (nbAsteroids IS NOT NULL),
-    CONSTRAINT NN_stats_nbDeaths CHECK (nbDeaths IS NOT NULL),
-    CONSTRAINT NN_stats_nbPowerUps CHECK (nbPowerUps IS NOT NULL),
-    CONSTRAINT NN_stats_nbGames CHECK (nbGames IS NOT NULL),
-    CONSTRAINT NN_stats_nbWins CHECK (nbWins IS NOT NULL),
-    CONSTRAINT NN_stats_maxKills CHECK (maxKills IS NOT NULL),
-    CONSTRAINT NN_stats_maxPoints CHECK (maxPoints IS NOT NULL),
-    CONSTRAINT NN_stats_maxPowerUps CHECK (maxPowerUps IS NOT NULL),
-    CONSTRAINT NN_stats_maxDeaths CHECK (maxDeaths IS NOT NULL)
+    CONSTRAINT FK_stats FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE    
 );

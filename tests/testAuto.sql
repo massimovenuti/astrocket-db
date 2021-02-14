@@ -1,80 +1,175 @@
-select '--| Début du processus de test |--' as '';
-select '--- Test sur la table users ---' as '';
+select 'Test process' as 'Starting';
 
-select ' Username null : ' as '';
-call test_null_username();
+/*--------------------------------*/
 
-select ' Username not unique : ' as '';
-call test_notunique_username();
+select 'Table users' as 'Testing';
+
+call test_null_username(@test);
+select @test as 'Username null';
+
+call test_notunique_username(@test);
+select @test as 'Username not unique';
 
 /*select ' Username start with a number : ' as '';
 call test_startnumber_username();*/
 
-select ' Pwd null : ' as '';
-call test_null_pwd();
+call test_null_pwd(@test);
+select @test as 'Password null';
 
-select ' Email null : ' as '';
-call test_null_email();
+call test_null_email(@test);
+select @test as 'Email null';
 
-select ' Email not unique : ' as '';
-call test_notunique_email();
+call test_notunique_email(@test);
+select @test as 'Email not unique';
+delete from users where username = 'username';
 
 /*select ' Email regex : ' as '';
 call test_notlike_email();*/
 
-select ' Role null : ' as '';
-call test_null_role();
+call test_null_role(@test);
+select @test as 'Role null';
 
-select '--- Test sur la table servers ---' as '';
+/*--------------------------------*/
 
-select ' servName null : ' as '';
-call test_null_serverName();
+select 'Table servers' as 'Testing';
 
-select ' servName not unique : ' as '';
-call test_notunique_serverName();
+call test_null_serverName(@test);
+select @test as 'ServerName null';
 
-select ' serverToken null : ' as '';
-call test_null_serverToken();
+call test_notunique_serverName(@test);
+select @test as 'ServerName not unique';
 
-select ' serverToken not unique : ' as '';
-call test_notunique_serverToken();
+call test_null_serverToken(@test);
+select @test as 'ServerToken null';
 
+call test_notunique_serverToken(@test);
+select @test as 'ServerToken not unique';
 
-select '--- Test sur la table tokens ---' as '';
+/*--------------------------------*/
+
+select 'Table tokens' as 'Testing';
 
 /*** INSERT pour tester les conditions suivantes ***/
 insert into users (idUser, username, pwd, email, role)
 values (1, 'test', 'pwd', 'email@email.email', 'U');
 
-select ' idUser null : ' as '';
-call test_null_idUser();
+call test_null_idUser(@test);
+select @test as 'idUser null';
 
-select ' idToken null : ' as '';
-call test_null_idToken();
+call test_null_idToken(@test);
+select @test as 'idToken null';
 
-select ' strToken not unique : ' as '';
-call test_notunique_strToken();
+call test_notunique_strToken(@test);
+select @test as 'strToken not unique';
 
-select ' expirationDate null : ' as '';
-call test_null_expirationDate();
+call test_null_expirationDate(@test);
+select @test as 'ExpirationDate null';
 
-select ' strToken null : ' as '';
-call test_null_strToken();
+call test_null_strToken(@test);
+select @test as 'strToken null';
 
+/*--------------------------------*/
 
+select 'Table bans' as 'Testing';
 
-select '--- Test sur la table bans ---' as '';
+call test_null_idUserBan(@test);
+select @test as 'idUser ban null';
 
-select ' idUser ban null : ' as '';
-call test_null_idUserBan();
-
-select ' banEnd null : ' as '';
-call test_null_banEnd();
-
+call test_null_banEnd(@test);
+select @test as 'banEnd null';
 
 /*** Suppression utilisateur de test ***/
 delete
 from users
 where username = 'test';
+
+/*--------------------------------*/
+
+select 'Table stats' as 'Testing';
+
+call test_null_idUserStats(@test);
+select @test as 'idUser stats null';
+delete from users where username = 'test';
+
+call test_null_nbKills(@test);
+select @test as 'nbKills null';
+delete from users where username = 'test';
+
+call test_null_nbGames(@test);
+select @test as 'nbGames null';
+delete from users where username = 'test';
+
+call test_null_nbAsteroids(@test);
+select @test as 'nbAsteroids null';
+delete from users where username = 'test';
+
+call test_null_nbPoints(@test);
+select @test as 'nbPoints null';
+delete from users where username = 'test';
+
+call test_null_nbPowersUps(@test);
+select @test as 'nbPowersUps null';
+delete from users where username = 'test';
+
+call test_null_nbWins(@test);
+select @test as 'nbWins null';
+delete from users where username = 'test';
+
+call test_null_maxDeaths(@test);
+select @test as 'maxDeaths null';
+delete from users where username = 'test';
+
+call test_null_maxKills(@test);
+select @test as 'maxKills null';
+delete from users where username = 'test';
+
+call test_null_maxPowersUp(@test);
+select @test as 'maxPowersUps null';
+delete from users where username = 'test';
+
+call test_null_maxPoints(@test);
+select @test as 'maxPoints null';
+delete from users where username = 'test';
+
+call test_greater0_nbKills(@test);
+select @test as 'nbKills greater0';
+delete from users where username = 'test';
+
+call test_greater0_nbGames(@test);
+select @test as 'nbGames greater0';
+delete from users where username = 'test';
+
+call test_greater0_nbAsteroids(@test);
+select @test as 'nbAsteroids greater0';
+delete from users where username = 'test';
+
+call test_greater0_nbPoints(@test);
+select @test as 'nbPoints greater0';
+delete from users where username = 'test';
+
+call test_greater0_nbPowersUps(@test);
+select @test as 'nbPowersUps greater0';
+delete from users where username = 'test';
+
+call test_greater0_nbWins(@test);
+select @test as 'nbWins greater0';
+delete from users where username = 'test';
+
+call test_greater0_maxDeaths(@test);
+select @test as 'maxDeaths greater0';
+delete from users where username = 'test';
+
+call test_greater0_maxKills(@test);
+select @test as 'maxKilss greater0';
+delete from users where username = 'test';
+
+call test_greater0_maxPowersUp(@test);
+select @test as 'maxPowersUps greater0';
+delete from users where username = 'test';
+
+call test_greater0_maxPoints(@test);
+select @test as 'maxPoints greater0';
+delete from users where username = 'test';
+
 
 select '--| Fin de processus de test |--' as '';
