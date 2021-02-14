@@ -3,25 +3,26 @@
  Important : les triggers i_users et i_tokens NE doivent PAS exister
  */
 
-/* Utilsateur de test */
-INSERT INTO users (idUser, username, pwd, email)
-VALUES (1, 'username', 'pwd', 'email@email.email');
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_clean_tables()
+BEGIN
+    /* Utilsateur de test */
+    INSERT INTO users (idUser, username, pwd, email)
+    VALUES (1, 'username', 'pwd', 'email@email.email');
 
-INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
-VALUES (1, 1, 'strToken', SUBDATE(NOW(), INTERVAL 2 DAY));
-INSERT INTO bans (idUser, banEnd)
-VALUES (1, SUBDATE(NOW(), INTERVAL 2 DAY));
+    INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
+    VALUES (1, 1, 'strToken', SUBDATE(NOW(), INTERVAL 2 DAY));
+    INSERT INTO bans (idUser, banEnd)
+    VALUES (1, SUBDATE(NOW(), INTERVAL 2 DAY));
 
-CALL p_clean_tables();
+    CALL p_clean_tables();
 
-SELECT *
-FROM bans
-WHERE idUser = 1;
-SELECT *
-FROM tokens
-WHERE idUser = 1;
+    SELECT IF ((SELECT COUNT(*) FROM bans WHERE idUser = 1),'Test clean tables bans : FAIL','Test clean tables bans: OK');
+    SELECT IF ((SELECT COUNT(*)  FROM tokens WHERE idUser = 1),'Test clean tables tokens : FAIL','Test clean tables tokens: OK');
 
-/* Suppression utilisateur de test */
-DELETE
-FROM users
-WHERE idUser = 1;
+    /* Suppression utilisateur de test */
+    DELETE
+    FROM users
+    WHERE idUser = 1;
+END;
+//
