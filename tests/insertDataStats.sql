@@ -36,41 +36,151 @@ values (10, 'stats10', 'pwd', 'email10@email.email', 'U');
 /* Insertion de statistiques pour chaque utilisateur */
 
 -- User : stats1
-insert into stats
-values (1, 10000, 100, 1000, 100, 10, 100, 10, 10, 1000, 1, 10);
+update stats
+SET nbPoints = 10000, 
+    nbKills = 100,
+    nbAsteroids =  1000, 
+    nbDeaths = 100, 
+    nbPowerUps = 10, 
+    nbGames = 100,
+    nbWins = 10,
+    maxKills = 10, 
+    maxPoints = 1000,
+    maxPowerUps =  1, 
+    maxDeaths = 10
+WHERE idUser = 1;
 
 -- User : stats2
-insert into stats
-values (2, 20000, 200, 2000, 200, 20, 200, 20, 20, 2000, 2, 20);
+update stats
+SET nbPoints = 20000, 
+    nbKills = 200,
+    nbAsteroids =  2000, 
+    nbDeaths = 200, 
+    nbPowerUps = 20, 
+    nbGames = 200,
+    nbWins = 20,
+    maxKills = 20, 
+    maxPoints = 2000,
+    maxPowerUps =  2, 
+    maxDeaths = 20
+WHERE idUser = 2;
 
 -- User : stats3
-insert into stats
-values (3, 30000, 300, 3000, 300, 30, 300, 30, 30, 3000, 3, 30);
+update stats
+SET nbPoints = 30000, 
+    nbKills = 300,
+    nbAsteroids =  3000, 
+    nbDeaths = 300, 
+    nbPowerUps = 30, 
+    nbGames = 300,
+    nbWins = 30,
+    maxKills = 30, 
+    maxPoints = 3000,
+    maxPowerUps =  3, 
+    maxDeaths = 30
+WHERE idUser = 3;
 
 -- User : stats4
-insert into stats
-values (4, 40000, 400, 4000, 400, 40, 400, 40, 40, 4000, 4, 40);
+update stats
+SET nbPoints = 40000, 
+    nbKills = 400,
+    nbAsteroids =  4000, 
+    nbDeaths = 400, 
+    nbPowerUps = 40, 
+    nbGames = 400,
+    nbWins = 40,
+    maxKills = 40, 
+    maxPoints = 4000,
+    maxPowerUps =  4, 
+    maxDeaths = 40
+WHERE idUser = 4;
 
 -- User : stats5
-insert into stats
-values (5, 50000, 500, 5000, 500, 50, 500, 50, 50, 5000, 5, 50);
+update stats
+SET nbPoints = 50000, 
+    nbKills = 500,
+    nbAsteroids =  5000, 
+    nbDeaths = 500, 
+    nbPowerUps = 50, 
+    nbGames = 500,
+    nbWins = 50,
+    maxKills = 50, 
+    maxPoints = 5000,
+    maxPowerUps =  5, 
+    maxDeaths = 50
+WHERE idUser = 5;
 
 -- User : stats6
-insert into stats
-values (6, 60000, 600, 6000, 600, 60, 600, 60, 60, 6000, 6, 60);
+update stats
+SET nbPoints = 60000, 
+    nbKills = 600,
+    nbAsteroids =  6000, 
+    nbDeaths = 600, 
+    nbPowerUps = 60, 
+    nbGames = 600,
+    nbWins = 60,
+    maxKills = 60, 
+    maxPoints = 6000,
+    maxPowerUps =  6, 
+    maxDeaths = 60
+WHERE idUser = 6;
 
 -- User : stats7
-insert into stats
-values (7, 70000, 700, 7000, 700, 70, 700, 70, 70, 7000, 7, 70);
+update stats
+SET nbPoints = 70000, 
+    nbKills = 700,
+    nbAsteroids =  7000, 
+    nbDeaths = 700, 
+    nbPowerUps = 70, 
+    nbGames = 700,
+    nbWins = 70,
+    maxKills = 70, 
+    maxPoints = 7000,
+    maxPowerUps =  7, 
+    maxDeaths = 70
+WHERE idUser = 7;
 
 -- User : stats8
-insert into stats
-values (8, 80000, 800, 8000, 800, 80, 800, 80, 80, 8000, 8, 80);
+update stats
+SET nbPoints = 80000, 
+    nbKills = 800,
+    nbAsteroids =  8000, 
+    nbDeaths = 800, 
+    nbPowerUps = 80, 
+    nbGames = 800,
+    nbWins = 80,
+    maxKills = 80, 
+    maxPoints = 8000,
+    maxPowerUps =  8, 
+    maxDeaths = 80
+WHERE idUser = 8;
 
 -- User : stats9
-insert into stats
-values (9, 90000, 900, 9000, 900, 90, 900, 90, 90, 9000, 9, 90);
+update stats
+SET nbPoints = 90000, 
+    nbKills = 900,
+    nbAsteroids =  9000, 
+    nbDeaths = 900, 
+    nbPowerUps = 90, 
+    nbGames = 900,
+    nbWins = 90,
+    maxKills = 90, 
+    maxPoints = 9000,
+    maxPowerUps =  9, 
+    maxDeaths = 90
+WHERE idUser = 9;
 
 -- User : stats10
-insert into stats
-values (10, 100000, 1000, 10000, 1000, 100, 1000, 100, 100, 10000, 10, 100);
+update stats
+SET nbPoints = 100000, 
+    nbKills = 1000,
+    nbAsteroids =  10000, 
+    nbDeaths = 1000, 
+    nbPowerUps = 100, 
+    nbGames = 1000,
+    nbWins = 100,
+    maxKills = 100, 
+    maxPoints = 10000,
+    maxPowerUps =  10, 
+    maxDeaths = 100
+WHERE idUser = 10;
