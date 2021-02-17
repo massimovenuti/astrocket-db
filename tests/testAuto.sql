@@ -85,7 +85,7 @@ where username = 'test';
 
 /*--------------------------------*/
 select 'Table stats' as 'Testing';
-
+/*
 call test_null_idUserStats(@test);
 select @test as 'idUser stats null';
 delete from stats where idUser = 1;
@@ -169,6 +169,7 @@ delete from stats where idUser = 1;
 call test_greater0_maxPoints(@test);
 select @test as 'maxPoints greater0';
 delete from stats where idUser = 1;
+*/
 
 /*--------------------------------*/
 
@@ -177,7 +178,7 @@ select 'Procedures' as 'Testing';
 call test_clean_tables();
 
 /*--------------------------------*/
-
+delete from users where idUser = 1;
 select 'Triggers' as 'Testing';
 
 /* Utilisateur de test */
@@ -203,6 +204,8 @@ select @test as 'dateBan update';
 DELETE
 FROM bans
 where idUser = 1;
+
+call test_trigger_stats_update();
 
 /*** Suppression utilisateur de test ***/
 delete from users where idUser = 1;

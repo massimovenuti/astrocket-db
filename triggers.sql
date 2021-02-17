@@ -41,7 +41,7 @@ END;
 
 DELIMITER //
 CREATE OR REPLACE trigger u_stats
-    AFTER UPDATE
+    BEFORE UPDATE
     ON stats
     FOR EACH ROW
 BEGIN 
@@ -70,32 +70,20 @@ BEGIN
         SET maxPU = NEW.maxPowerUps;
     END IF;
 
-    UPDATE stats 
-    SET
-        nbPoints = NEW.nbPoints + OLD.nbPoints, 
-        nbKills = NEW.nbKills + OLD.nbKills, 
-        nbAsteroids = NEW.nbAsteroids + OLD.nbAsteroids, 
-        nbDeaths = NEW.nbDeaths + OLD.nbDeaths, 
-        nbPowerUps = NEW.nbPowerUps + OLD.nbPowerUps, 
-        nbGames =  OLD.nbGames + 1,
-        nbWins = NEW.nbWins + OLD.nbWins, 
-        maxKills = maxK, 
-        maxPoints = maxP, 
-        maxPowerUps = maxPU, 
-        maxDeaths = maxD     
-    WHERE (idUser = OLD.idUser);
+    SET NEW.nbPoints = NEW.nbPoints + OLD.nbPoints; 
+    SET NEW.nbKills = NEW.nbKills + OLD.nbKills;
+    SET NEW.nbAsteroids = NEW.nbAsteroids + OLD.nbAsteroids; 
+    SET NEW.nbDeaths = NEW.nbDeaths + OLD.nbDeaths;
+    SET NEW.nbPowerUps = NEW.nbPowerUps + OLD.nbPowerUps; 
+    SET NEW.nbGames =  OLD.nbGames + 1;
+    SET NEW.nbWins = NEW.nbWins + OLD.nbWins; 
+    SET NEW.maxKills = maxK; 
+    SET NEW.maxPoints = maxP; 
+    SET NEW.maxPowerUps = maxPU; 
+    SET NEW.maxDeaths = maxD;
 
 END;
 //
 
-DELIMITER //
-CREATE OR REPLACE trigger d_stats
-    AFTER DELETE
-    ON stats
-    FOR EACH ROW
-BEGIN
-    INSERT INTO stats (idUser) VALUES (OLD.idUser);
-END;
-//
 
 

@@ -71,5 +71,21 @@ BEGIN
 END;
 //
 
+/***
+ La modification des statistiques doit cumuler les statistiques envoyées aux statistiques actuelles
+ ***/
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_trigger_stats_update(string VARCHAR(128))
+BEGIN
+
+    UPDATE bans
+    SET banEnd = SUBDATE(NOW(), INTERVAL 2 DAY)
+    WHERE idUser = 1;
+
+    SET string := 'Test date invalide (update): FAIL';
+END;
+//
+
 
 
