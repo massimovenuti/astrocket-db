@@ -205,9 +205,11 @@ DELETE
 FROM bans
 where idUser = 1;
 
-call test_trigger_stats_update();
-
 /*** Suppression utilisateur de test ***/
 delete from users where idUser = 1;
+
+call test_trigger_stats_update();
+
+
 
 select 'Test process ' as 'Ending';

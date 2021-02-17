@@ -76,14 +76,40 @@ END;
  ***/
 
 DELIMITER //
-CREATE OR REPLACE PROCEDURE test_trigger_stats_update(string VARCHAR(128))
+CREATE OR REPLACE PROCEDURE test_trigger_stats_update()
 BEGIN
 
-    UPDATE bans
-    SET banEnd = SUBDATE(NOW(), INTERVAL 2 DAY)
+    insert into users (idUser, username, pwd, email, role)
+        values (1, 'test', 'pwd', 'email@email.email', 'U');
+
+    update stats
+    SET nbPoints = 10000, 
+        nbKills = 100,
+        nbAsteroids =  1000, 
+        nbDeaths = 100, 
+        nbPowerUps = 10, 
+        nbGames = 1,
+        nbWins = 10,
+        maxKills = 10, 
+        maxPoints = 1000,
+        maxPowerUps =  1, 
+        maxDeaths = 10
     WHERE idUser = 1;
 
-    SET string := 'Test date invalide (update): FAIL';
+    SELECT IF ((select nbPoints from stats where idUser = 1) != 10000, 'Update nbPoints : FAIL', 'Update nbPoints : OK');
+    SELECT IF ((select nbKills from stats where idUser = 1) != 100, 'Update nbKills : FAIL', 'Update nbKills : OK');
+    SELECT IF ((select nbDeaths from stats where idUser = 1) != 100, 'Update nbDeaths : FAIL', 'Update nbDeaths : OK');
+    SELECT IF ((select nbAsteroids from stats where idUser = 1) != 1000, 'Update nbAsteroids : FAIL', 'Update nbAsteroids : OK');
+    SELECT IF ((select nbGames from stats where idUser = 1) != 1, 'Update nbGames : FAIL', 'Update nbGames : OK');
+    SELECT IF ((select nbPowerUps from stats where idUser = 1) != 10, 'Update nbPowerUps : FAIL', 'Update nbPowerUps : OK');
+    SELECT IF ((select nbWins from stats where idUser = 1) != 10, 'Update nbWins : FAIL', 'Update nbWins : OK');
+    SELECT IF ((select maxKills from stats where idUser = 1) != 10, 'Update maxKills : FAIL', 'Update maxKills : OK');
+    SELECT IF ((select maxPoints from stats where idUser = 1) != 1000, 'Update maxPoints : FAIL', 'Update maxPoints : OK');
+    SELECT IF ((select maxPowerUps from stats where idUser = 1) != 1, 'Update maxPowerUps : FAIL', 'Update maxPowerUps : OK');
+    SELECT IF ((select maxDeaths from stats where idUser = 1) != 10, 'Update maxDeaths : FAIL', 'Update maxDeaths : OK');
+
+    delete from users where idUser = 1;
+
 END;
 //
 
