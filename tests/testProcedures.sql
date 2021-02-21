@@ -6,7 +6,8 @@
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_clean_tables()
 BEGIN
-    /* Utilsateur de test */
+
+    START TRANSACTION;
     INSERT INTO users (idUser, username, pwd, email)
     VALUES (1, 'username', 'pwd', 'email@email.email');
 
@@ -19,10 +20,7 @@ BEGIN
 
     SELECT IF ((SELECT COUNT(*) FROM bans WHERE idUser = 1),'Test clean tables bans : FAIL','Test clean tables bans: OK');
     SELECT IF ((SELECT COUNT(*)  FROM tokens WHERE idUser = 1),'Test clean tables tokens : FAIL','Test clean tables tokens: OK');
+    ROLLBACK;
 
-    /* Suppression utilisateur de test */
-    DELETE
-    FROM users
-    WHERE idUser = 1;
 END;
 //
