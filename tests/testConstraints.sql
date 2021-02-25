@@ -13,7 +13,7 @@ BEGIN
         END;
 
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, NULL, 'pwd', 'email@email.email', 'U');
+        VALUES (1, NULL, 'pwd', 'email@email.em', 'U');
 
         SET string := 'Test username null : FAIL';
 END;
@@ -35,9 +35,10 @@ BEGIN
         START TRANSACTION;
 
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'username', 'pwd', 'email@email.email1', 'U');
+        VALUES (1, 'username', 'pwd', 'email@email.em', 'U');
+        
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (2, 'username', 'pwd', 'email@email.email2', 'U');
+        VALUES (2, 'username', 'pwd', 'email2@email.em', 'U');
 
         SET string := 'Test username not unique : FAIL';
         
@@ -46,21 +47,25 @@ END;
 
 
 /* username starts with number */
-/*
+
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_startnumber_username(OUT string VARCHAR(128))
 BEGIN
         DECLARE EXIT HANDLER 
-                FOR 
+                FOR 4025
         BEGIN
             SET string := 'Test username start with number : OK';
+            ROLLBACK;
         END;
 
+        START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, '1username', 'pwd', 'email@email.email', 'U');
+        VALUES (1, '1username', 'pwd', 'email@email.em', 'U');
+        SET string := 'Test username start with number : FAIL';
+        ROLLBACK;
 END;
 //
-*/
+
 
 
 /* pwd NULL */
@@ -75,7 +80,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'username', NULL, 'email@email.email', 'U');  
+        VALUES (1, 'username', NULL, 'email@email.em', 'U');  
         SET string := 'Test username not unique : FAIL';
         ROLLBACK;
 
@@ -114,9 +119,9 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'username1', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'usernameun', 'pwd', 'email@email.em', 'U');
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'username2', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'usernamedeux', 'pwd', 'email@email.em', 'U');
         
         SET string := 'Test email not unique : FAIL';
         ROLLBACK;
@@ -125,21 +130,24 @@ END;
 
 
 /* email not like ‘%@%.%’ */
-/*
+
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_notlike_email(OUT string VARCHAR(128))
 BEGIN
         DECLARE EXIT HANDLER 
-                FOR 
+                FOR 4025
         BEGIN
             SET string := 'Test email regex : OK';
+            ROLLBACK;
         END;
 
+        START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'username', 'pwd', 'email', 'U');
+        ROLLBACK;
 END;
 //
-*/
+
 
 
 /* role NULL */
@@ -154,8 +162,28 @@ BEGIN
         END;
 
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'username', 'pwd', 'email@email.email', NULL);
+        VALUES (1, 'username', 'pwd', 'email@email.em', NULL);
         SET string := 'Test role null : FAIL';
+END;
+//
+
+/* role not in ('A','U') */
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_notin_role(OUT string VARCHAR(128))
+BEGIN
+        DECLARE EXIT HANDLER 
+                FOR 4025
+        BEGIN
+            SET string := 'Test role not in : OK';
+            ROLLBACK;
+        END;
+
+        START TRANSACTION;
+        INSERT INTO users (idUser, username, pwd, email, role)
+        VALUES (1, 'usernameun', 'pwd', 'email@email.em', 'W');
+        
+        SET string := 'Test role not in : FAIL';
+        ROLLBACK;
 END;
 //
 
@@ -263,7 +291,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (NULL, 1, 'eyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
@@ -304,7 +332,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, 1, 'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
@@ -330,7 +358,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, 1, 'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', NULL);
@@ -354,7 +382,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, 1, NULL, "2022-02-06");
@@ -399,7 +427,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO bans (idUser, banEnd)
         VALUES (1, NULL);
@@ -436,7 +464,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbPoints(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbPoints >= 0 : OK';
             ROLLBACK;
@@ -444,7 +472,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = -1, 
@@ -472,7 +500,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbKills(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbKills >= 0 : OK';
             ROLLBACK;
@@ -480,7 +508,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -508,7 +536,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbAsteroids(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbAsteroids >= 0 : OK';
             ROLLBACK;
@@ -516,7 +544,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -544,7 +572,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbDeaths(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbDeaths >= 0 : OK';
             ROLLBACK;
@@ -552,7 +580,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -580,7 +608,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbPowersUps(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbPowersUps >= 0 : OK';
             ROLLBACK;
@@ -588,7 +616,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -616,7 +644,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbGames(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbGames >= 0 : OK';
             ROLLBACK;
@@ -624,7 +652,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -652,7 +680,7 @@ CREATE OR REPLACE PROCEDURE test_greater0_nbWins(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
             SET string := 'Test nbWins >= 0 : OK';
             ROLLBACK;
@@ -660,7 +688,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
         UPDATE stats
         SET nbPoints = 0, 
             nbKills = 0,
@@ -687,15 +715,15 @@ CREATE OR REPLACE PROCEDURE test_greater0_maxKills(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
-            SET string := 'Test maxKills >= 0 : OK';
+            SET string := 'Test maxKills >= 0 : FAIL';
             ROLLBACK;
         END;
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -711,7 +739,7 @@ BEGIN
             maxDeaths = 0
         WHERE idUser = 1;
 
-        SET string := 'Test maxKills >= 0 : FAIL';
+        SET string := 'Test maxKills >= 0 : OK';
         ROLLBACK;
 END;
 //
@@ -722,15 +750,15 @@ CREATE OR REPLACE PROCEDURE test_greater0_maxPoints(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
-            SET string := 'Test maxPoints >= 0 : OK';
+            SET string := 'Test maxPoints >= 0 : FAIL';
             ROLLBACK;
         END;
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -746,7 +774,7 @@ BEGIN
             maxDeaths = 0
         WHERE idUser = 1;
 
-        SET string := 'Test maxPoints >= 0 : FAIL';
+        SET string := 'Test maxPoints >= 0 : OK';
         ROLLBACK;
 END;
 //
@@ -758,15 +786,15 @@ CREATE OR REPLACE PROCEDURE test_greater0_maxPowersUp(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
-            SET string := 'Test maxPowersUps >= 0 : OK';
+            SET string := 'Test maxPowersUps >= 0 : FAIL';
             ROLLBACK;
         END;
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -782,7 +810,7 @@ BEGIN
             maxDeaths = 0
         WHERE idUser = 1;
 
-        SET string := 'Test maxPowersUps >= 0 : FAIL';
+        SET string := 'Test maxPowersUps >= 0 : OK';
         ROLLBACK;
 END;
 //
@@ -794,15 +822,15 @@ CREATE OR REPLACE PROCEDURE test_greater0_maxDeaths(OUT string VARCHAR(128))
 BEGIN
 
         DECLARE EXIT HANDLER 
-                FOR 4022
+                FOR 4025
         BEGIN
-            SET string := 'Test maxDeaths >= 0 : OK';
+            SET string := 'Test maxDeaths >= 0 : FAIL';
             ROLLBACK;
         END;
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -818,7 +846,7 @@ BEGIN
             maxDeaths = -1
         WHERE idUser = 1;
 
-        SET string := 'Test maxDeaths >= 0 : FAIL';
+        SET string := 'Test maxDeaths >= 0 : OK';
         ROLLBACK;
 END;
 //
@@ -838,7 +866,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = NULL, 
@@ -874,7 +902,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -910,7 +938,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -945,7 +973,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -981,7 +1009,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -1017,7 +1045,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -1053,7 +1081,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -1089,7 +1117,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -1125,7 +1153,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -1161,7 +1189,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 
@@ -1197,7 +1225,7 @@ BEGIN
 
         START TRANSACTION;
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         UPDATE stats
         SET nbPoints = 0, 

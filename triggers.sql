@@ -75,7 +75,7 @@ BEGIN
     SET NEW.nbAsteroids = NEW.nbAsteroids + OLD.nbAsteroids; 
     SET NEW.nbDeaths = NEW.nbDeaths + OLD.nbDeaths;
     SET NEW.nbPowerUps = NEW.nbPowerUps + OLD.nbPowerUps; 
-    SET NEW.nbGames =  OLD.nbGames + 1;
+    SET NEW.nbGames =  OLD.nbGames + NEW.nbGames;
     SET NEW.nbWins = NEW.nbWins + OLD.nbWins; 
     SET NEW.maxKills = maxK; 
     SET NEW.maxPoints = maxP; 

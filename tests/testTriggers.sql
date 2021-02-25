@@ -6,7 +6,12 @@
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_trigger_newUser()
 BEGIN
+    START TRANSACTION;
+    INSERT INTO users (idUser, username, pwd, email, role)
+    VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
+
     SELECT IF ((SELECT COUNT(*) FROM stats WHERE idUser = 1),'Test insert new Stats: OK','Test insert new Stats : FAIL');
+    ROLLBACK;
 END;
 //
 
@@ -27,7 +32,7 @@ BEGIN
 
     START TRANSACTION;
     INSERT INTO users (idUser, username, pwd, email, role)
-    VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+    VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
     INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
     VALUES (1, 1, 'hyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ',(SELECT SUBDATE(NOW(), INTERVAL 1 DAY)));
     SET string := 'Test date invalide : FAIL';
@@ -51,7 +56,7 @@ BEGIN
 
     START TRANSACTION;
     INSERT INTO users (idUser, username, pwd, email, role)
-    VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+    VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
     INSERT INTO bans (idUser, banEnd)
     VALUES (1, SUBDATE(NOW(), INTERVAL 1 DAY));
@@ -78,7 +83,7 @@ BEGIN
 
     START TRANSACTION;
     INSERT INTO users (idUser, username, pwd, email, role)
-    VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+    VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
     INSERT INTO bans (idUser, banEnd)
     VALUES (1, ADDDATE(NOW(), INTERVAL 1 DAY));
 
@@ -100,7 +105,7 @@ CREATE OR REPLACE PROCEDURE test_trigger_stats_update()
 BEGIN
 
     INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'test', 'pwd', 'email@email.email', 'U');
+        VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
     UPDATE stats
     SET nbPoints = 10000, 

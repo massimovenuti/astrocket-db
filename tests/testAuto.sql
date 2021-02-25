@@ -10,10 +10,9 @@ SELECT @test AS 'Username null';
 
 CALL test_notunique_username(@test);
 SELECT @test AS 'Username not unique';
-select * from users;
 
-/*SELECT ' Username start with a number : ' AS '';
-CALL test_startnumber_username();*/
+CALL test_startnumber_username(@test);
+SELECT @test AS 'Username with number';
 
 CALL test_null_pwd(@test);
 SELECT @test AS 'Password null';
@@ -24,11 +23,14 @@ SELECT @test AS 'Email null';
 CALL test_notunique_email(@test);
 SELECT @test AS 'Email not unique';
 
-/*SELECT ' Email regex : ' AS '';
-CALL test_notlike_email();*/
+CALL test_notlike_email(@test);
+SELECT @test AS 'Not like email';
 
 CALL test_null_role(@test);
 SELECT @test AS 'Role null';
+
+CALL test_notin_role(@test);
+SELECT @test AS 'Role not in (A,U)';
 
 /*--------------------------------*/
 
@@ -77,7 +79,7 @@ SELECT @test AS 'banEnd null';
 
 /*--------------------------------*/
 SELECT 'Table stats' AS 'Testing';
-/*
+
 CALL test_null_idUserStats(@test);
 SELECT @test AS 'idUser stats null';
 
@@ -105,14 +107,12 @@ SELECT @test AS 'maxDeaths null';
 
 CALL test_null_maxKills(@test);
 SELECT @test AS 'maxKills null';
-delete from stats where idUser = 1;
 
 CALL test_null_maxPowersUp(@test);
 SELECT @test AS 'maxPowersUps null';
 
 CALL test_null_maxPoints(@test);
 SELECT @test AS 'maxPoints null';
-delete from stats where idUser = 1;
 
 CALL test_greater0_nbKills(@test);
 SELECT @test AS 'nbKills greater0';
@@ -143,13 +143,13 @@ SELECT @test AS 'maxPowersUps greater0';
 
 CALL test_greater0_maxPoints(@test);
 SELECT @test AS 'maxPoints greater0';
-*/
+
 
 /*--------------------------------*/
 
-SELECT 'Procedures' AS 'Testing';
+/*SELECT 'Procedures' AS 'Testing';
 
-CALL test_clean_tables();
+CALL test_clean_tables();*/
 
 /*--------------------------------*/
 SELECT 'Triggers' AS 'Testing';

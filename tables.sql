@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT PK_users PRIMARY KEY (idUser),
     CONSTRAINT UC_users_username UNIQUE (username),
     CONSTRAINT UC_users_email UNIQUE (email),
-    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z]$'),
-    CONSTRAINT CK_users_email CHECK (email REGEXP '^%@%.%$'),
+    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z.]+$'),
+    CONSTRAINT CK_users_email CHECK (email REGEXP '^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'),
     CONSTRAINT CK_users_role CHECK (role IN ('A', 'U'))
 );
 
@@ -46,37 +46,27 @@ CREATE TABLE IF NOT EXISTS stats
 (
     idUser INTEGER,
     nbPoints INTEGER DEFAULT 0 NOT NULL,
-        CONSTRAINT CK_stats_nbPoints 
-        CHECK (nbPoints >= 0),
+        CONSTRAINT CK_stats_nbPoints CHECK (nbPoints >= 0),
     nbKills INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_nbKills 
-        CHECK (nbKills >= 0),
+        CONSTRAINT CK_stats_nbKills CHECK (nbKills >= 0),
     nbAsteroids INTEGER DEFAULT 0 NOT NULL,
-        CONSTRAINT CK_stats_nbAsteroids 
-        CHECK (nbAsteroids >= 0), 
+        CONSTRAINT CK_stats_nbAsteroids CHECK (nbAsteroids >= 0), 
     nbDeaths INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_nbDeaths 
-        CHECK (nbDeaths >= 0),
+        CONSTRAINT CK_stats_nbDeaths CHECK (nbDeaths >= 0),
     nbPowerUps INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_nbPowerUps 
-        CHECK (nbPowerUps >= 0),
+        CONSTRAINT CK_stats_nbPowerUps CHECK (nbPowerUps >= 0),
     nbGames INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_nbGames 
-        CHECK (nbGames >= 0),
+        CONSTRAINT CK_stats_nbGames CHECK (nbGames >= 0),
     nbWins INTEGER DEFAULT 0 NOT NULL,
-        CONSTRAINT CK_stats_nbWins 
-        CHECK (nbWins >= 0),
+        CONSTRAINT CK_stats_nbWins CHECK (nbWins >= 0),
     maxKills INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_maxKills 
-        CHECK (maxKills >= 0),
+        CONSTRAINT CK_stats_maxKills CHECK (maxKills >= 0),
     maxPoints INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_maxPoints 
-        CHECK (maxPoints >= 0),
+        CONSTRAINT CK_stats_maxPoints CHECK (maxPoints >= 0),
     maxPowerUps INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_maxPowerUps 
-        CHECK (maxPowerUps >= 0),
+        CONSTRAINT CK_stats_maxPowerUps CHECK (maxPowerUps >= 0),
     maxDeaths INTEGER DEFAULT 0 NOT NULL, 
-        CONSTRAINT CK_stats_maxDeaths CHECK (maxDeaths >= 0 or maxDeaths IS NULL),
+        CONSTRAINT CK_stats_maxDeaths CHECK (maxDeaths >= 0),
     CONSTRAINT PK_stats PRIMARY KEY (idUser),
     CONSTRAINT FK_stats FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE    
 );
