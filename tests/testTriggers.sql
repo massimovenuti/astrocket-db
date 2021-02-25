@@ -138,5 +138,23 @@ BEGIN
 END;
 //
 
+/***
+ Une insertion dans la table ban doit supprimer tout les tokens de l'utilisateur
+ ***/
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_trigger_newBan()
+BEGIN
+    START TRANSACTION;
+    INSERT INTO users (idUser, username, pwd, email, role)
+    VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
+
+    INSERT INTO bans (idUser,banEnd)
+    VALUES (1,  ADDDATE(NOW(), INTERVAL 1 DAY));
+
+    SELECT IF ((SELECT COUNT(*) FROM tokens WHERE idUser = 1),'Test insert Bans: FAIL','Test insert Bans : OK');
+    ROLLBACK;
+END;
+//
 
 

@@ -167,4 +167,6 @@ SELECT @test AS 'dateBan update';
 
 CALL test_trigger_stats_update();
 
+CALL test_trigger_newBan();
+
 SELECT 'Test process ' AS 'Ending';

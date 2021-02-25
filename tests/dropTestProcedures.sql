@@ -49,3 +49,4 @@ DROP PROCEDURE IF EXISTS test_trigger_dateToken;
 DROP PROCEDURE IF EXISTS test_trigger_dateBan_insert;
 DROP PROCEDURE IF EXISTS test_trigger_dateBan_update;
 DROP PROCEDURE IF EXISTS test_trigger_stats_update;
+DROP PROCEDURE IF EXISTS test_trigger_newBan;

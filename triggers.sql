@@ -85,5 +85,15 @@ BEGIN
 END;
 //
 
+DELIMITER //
+CREATE OR REPLACE trigger i_bans
+    AFTER INSERT
+    ON bans
+    FOR EACH ROW
+BEGIN
+    DELETE FROM tokens WHERE idUser = NEW.idUser;
+END;
+//
+
 
 
