@@ -3,7 +3,7 @@
 ## Déploiement
 
 Afin de déployer la base de données, en ligne de commande, via `mariadb` :
-Ouvrez un terminal dans le répertoire contenant les fichiers sql
+Ouvrez un terminal à la racine du dépôt
 
 ```
 [sudo] mariadb
@@ -15,7 +15,7 @@ source deploy.sql
 ## Tests
 
 Pour tester le déploiement de votre base de données :
-Ouvrez un terminal dans le répertoire contenant les fichiers sql
+Ouvrez un terminal dans le répertoire `tests`
 
 ```
 [sudo] mariadb

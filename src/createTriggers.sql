@@ -3,7 +3,9 @@ CREATE OR REPLACE trigger i_bans
     AFTER INSERT
     ON bans
     FOR EACH ROW
-    CALL p_check_ban_end(NEW.banEnd);
+    IF NEW.banEnd < NOW() THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ban end is not valid';
+    END IF;
 //
 
 
@@ -12,7 +14,9 @@ CREATE OR REPLACE trigger u_bans
     AFTER UPDATE
     ON bans
     FOR EACH ROW
-    CALL p_check_ban_end(NEW.banEnd);
+    IF NEW.banEnd < NOW() THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ban end is not valid';
+    END IF;
 //
 
 
