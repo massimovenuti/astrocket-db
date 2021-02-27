@@ -10,12 +10,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test username null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, NULL, 'pwd', 'email@email.em', 'U');
 
         SET string := 'Test username null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -41,7 +46,8 @@ BEGIN
         VALUES (2, 'username', 'pwd', 'email2@email.em', 'U');
 
         SET string := 'Test username not unique : FAIL';
-        
+
+        ROLLBACK;
 END;
 //
 
@@ -59,9 +65,12 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, '1username', 'pwd', 'email@email.em', 'U');
+
         SET string := 'Test username start with number : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -76,15 +85,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test pwd null : OK';
+            ROLLBACK;
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
-        VALUES (1, 'username', NULL, 'email@email.em', 'U');  
+        VALUES (1, 'username', NULL, 'email@email.em', 'U');
+
         SET string := 'Test username not unique : FAIL';
+
         ROLLBACK;
-
-
 END;
 //
 
@@ -97,11 +108,16 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test email null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'username', 'pwd', NULL, 'U');
+
         SET string := 'Test email null : FAIL';
+        ROLLBACK;
 END;
 //
 
@@ -118,12 +134,15 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'usernameun', 'pwd', 'email@email.em', 'U');
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'usernamedeux', 'pwd', 'email@email.em', 'U');
         
         SET string := 'Test email not unique : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -142,8 +161,12 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'username', 'pwd', 'email', 'U');
+
+        SET string := 'Test email regex : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -159,11 +182,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test role null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'username', 'pwd', 'email@email.em', NULL);
+
         SET string := 'Test role null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -179,10 +208,12 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'usernameun', 'pwd', 'email@email.em', 'W');
         
         SET string := 'Test role not in : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -200,11 +231,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test serverToken null : OK';
+            ROLLBACK;
         END;
 
+        START TRANSACTION
+            ;
         INSERT INTO servers (idServer, serverName, serverToken)
         VALUES (0, 'serverName', NULL);
+
         SET string := 'Test serverToken null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -218,14 +255,19 @@ BEGIN
                 FOR 1062
         BEGIN
             SET string := 'Test serverToken not unique : OK';
+            ROLLBACK;
         END;
 
         START TRANSACTION;
+
         INSERT INTO servers (idServer, serverName, serverToken)
         VALUES (0, 'serverName1', 'serverToken');
+
         INSERT INTO servers (idServer, serverName, serverToken)
         VALUES (1, 'serverName2', 'serverToken');
+
         SET string := 'Test serverToken not unique : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -240,11 +282,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test serverName null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO servers (idServer, serverName, serverToken)
         VALUES (0, NULL, 'serverToken');
+
         SET string := 'Test serverName null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -261,12 +309,15 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO servers (idServer, serverName, serverToken)
         VALUES (0, 'serverName', 'serverToken1');
+
         INSERT INTO servers (idServer, serverName, serverToken)
         VALUES (1, 'serverName', 'serverToken2');
-        DELETE FROM servers WHERE idServer = 0;
+
         SET string := 'Test serverName not unique : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -290,12 +341,15 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (NULL, 1, 'eyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+
         SET string := 'Test idToken null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -310,11 +364,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test idUser null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, NULL, 'fyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+
         SET string := 'Test idUser null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -331,14 +391,18 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, 1, 'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (2, 1, 'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', "2022-02-06");
+
         SET string := 'Test strToken not unique : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -357,12 +421,15 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, 1, 'gyJuYW1lIjoiV2lraXBlZGlhIiwiaWF0IjoxNTI1Nzc3OTM4fQ', NULL);
+
         SET string := 'Test expirationDate null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -381,12 +448,15 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
         VALUES (1, 1, NULL, "2022-02-06");
+
         SET string := 'Test strToken null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -404,11 +474,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test idUser null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO bans (idUser, banEnd)
         VALUES (NULL, "2022-02-06");
+
         SET string := 'Test idUser null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -426,12 +502,15 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
         INSERT INTO bans (idUser, banEnd)
         VALUES (1, NULL);
+
         SET string := 'Test banEnd null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -449,11 +528,17 @@ BEGIN
                 FOR 1048
         BEGIN
             SET string := 'Test idUser null : OK';
+            ROLLBACK;
         END;
+
+        START TRANSACTION;
 
         INSERT INTO stats
         VALUES (NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
         SET string := 'Test idUser null : FAIL';
+
+        ROLLBACK;
 END;
 //
 
@@ -471,6 +556,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -489,8 +575,8 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbPoints >= 0 : FAIL';
-        ROLLBACK;
 
+        ROLLBACK;
 END;
 //
 
@@ -507,6 +593,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -525,6 +612,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbKills >= 0 : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -534,7 +622,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_nbAsteroids(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -543,6 +630,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -561,6 +649,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbAsteroids >= 0 : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -570,7 +659,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_nbDeaths(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -579,6 +667,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -597,6 +686,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbDeaths >= 0 : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -606,7 +696,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_nbPowersUps(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -615,6 +704,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -633,6 +723,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbPowersUps >= 0 : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -642,7 +733,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_nbGames(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -651,6 +741,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -669,6 +760,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbGames >= 0 : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -678,7 +770,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_nbWins(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -687,8 +778,10 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
+
         UPDATE stats
         SET nbPoints = 0, 
             nbKills = 0,
@@ -704,6 +797,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbWins >= 0 : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -713,7 +807,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_maxKills(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -722,6 +815,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -740,6 +834,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxKills >= 0 : OK';
+
         ROLLBACK;
 END;
 //
@@ -748,7 +843,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_maxPoints(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -757,6 +851,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -775,6 +870,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxPoints >= 0 : OK';
+
         ROLLBACK;
 END;
 //
@@ -784,7 +880,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_maxPowersUp(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -793,6 +888,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -811,6 +907,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxPowersUps >= 0 : OK';
+
         ROLLBACK;
 END;
 //
@@ -820,7 +917,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_greater0_maxDeaths(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 4025
         BEGIN
@@ -829,6 +925,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -847,6 +944,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxDeaths >= 0 : OK';
+
         ROLLBACK;
 END;
 //
@@ -856,7 +954,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbPoints(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -865,6 +962,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -883,6 +981,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbPoints null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -892,7 +991,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbKills(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -901,6 +999,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -919,6 +1018,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbKills null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -928,7 +1028,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbAsteroids(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -937,6 +1036,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -955,6 +1055,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbAsteroids null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -963,7 +1064,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbDeaths(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -972,6 +1072,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -990,6 +1091,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbDeaths null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -999,7 +1101,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbPowersUps(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1008,6 +1109,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1026,6 +1128,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbPowersUps null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -1035,7 +1138,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbGames(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1044,6 +1146,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1062,6 +1165,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbGames null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -1071,7 +1175,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_nbWins(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1080,6 +1183,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1098,6 +1202,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test nbWins null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -1107,7 +1212,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_maxKills(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1116,6 +1220,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1134,6 +1239,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxKills null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -1143,7 +1249,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_maxPoints(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1152,6 +1257,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1170,6 +1276,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxPoints null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -1179,7 +1286,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_maxPowersUp(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1188,6 +1294,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1206,6 +1313,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxPowersUps null : FAIL';
+
         ROLLBACK;
 END;
 //
@@ -1215,7 +1323,6 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_null_maxDeaths(OUT string VARCHAR(128))
 BEGIN
-
         DECLARE EXIT HANDLER 
                 FOR 1048
         BEGIN
@@ -1224,6 +1331,7 @@ BEGIN
         END;
 
         START TRANSACTION;
+
         INSERT INTO users (idUser, username, pwd, email, role)
         VALUES (1, 'test', 'pwd', 'email@email.em', 'U');
 
@@ -1242,6 +1350,7 @@ BEGIN
         WHERE idUser = 1;
 
         SET string := 'Test maxDeaths null : FAIL';
+
         ROLLBACK;
 END;
 //

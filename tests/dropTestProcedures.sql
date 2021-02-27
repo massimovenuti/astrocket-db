@@ -23,6 +23,7 @@ DROP PROCEDURE IF EXISTS test_null_idUserStats;
 DROP PROCEDURE IF EXISTS test_null_nbKills;
 DROP PROCEDURE IF EXISTS test_null_nbGames;
 DROP PROCEDURE IF EXISTS test_null_nbAsteroids;
+DROP PROCEDURE IF EXISTS test_null_nbDeaths;
 DROP PROCEDURE IF EXISTS test_null_nbPoints;
 DROP PROCEDURE IF EXISTS test_null_nbPowersUps;
 DROP PROCEDURE IF EXISTS test_null_nbWins;
@@ -33,6 +34,7 @@ DROP PROCEDURE IF EXISTS test_null_maxPoints;
 DROP PROCEDURE IF EXISTS test_greater0_nbKills;
 DROP PROCEDURE IF EXISTS test_greater0_nbGames;
 DROP PROCEDURE IF EXISTS test_greater0_nbAsteroids;
+DROP PROCEDURE IF EXISTS test_greater0_nbDeaths;
 DROP PROCEDURE IF EXISTS test_greater0_nbPoints;
 DROP PROCEDURE IF EXISTS test_greater0_nbPowersUps;
 DROP PROCEDURE IF EXISTS test_greater0_nbWins;
@@ -43,6 +45,8 @@ DROP PROCEDURE IF EXISTS test_greater0_maxPoints;
 
 DROP PROCEDURE IF EXISTS test_null_idUserBan;
 DROP PROCEDURE IF EXISTS test_null_banEnd;
+
+DROP PROCEDURE IF EXISTS test_clean_tables;
 
 DROP PROCEDURE IF EXISTS test_trigger_newUser;
 DROP PROCEDURE IF EXISTS test_trigger_dateToken;

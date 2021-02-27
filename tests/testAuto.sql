@@ -1,8 +1,11 @@
 SELECT 'Test process' AS 'Starting';
-SET autocommit = 0;
-delete from users;
-/*--------------------------------*/
 
+SET autocommit = 0;
+DELETE
+FROM users;
+
+
+/*--------------------------------*/
 SELECT 'Table users' AS 'Testing';
 
 CALL test_null_username(@test);
@@ -32,8 +35,8 @@ SELECT @test AS 'Role null';
 CALL test_notin_role(@test);
 SELECT @test AS 'Role not in (A,U)';
 
-/*--------------------------------*/
 
+/*--------------------------------*/
 SELECT 'Table servers' AS 'Testing';
 
 CALL test_null_serverName(@test);
@@ -47,6 +50,7 @@ SELECT @test AS 'ServerToken null';
 
 CALL test_notunique_serverToken(@test);
 SELECT @test AS 'ServerToken not unique';
+
 
 /*--------------------------------*/
 SELECT 'Table tokens' AS 'Testing';
@@ -66,8 +70,8 @@ SELECT @test AS 'ExpirationDate null';
 CALL test_null_strToken(@test);
 SELECT @test AS 'strToken null';
 
-/*--------------------------------*/
 
+/*--------------------------------*/
 SELECT 'Table bans' AS 'Testing';
 
 CALL test_null_idUserBan(@test);
@@ -91,7 +95,9 @@ SELECT @test AS 'nbGames null';
 
 CALL test_null_nbAsteroids(@test);
 SELECT @test AS 'nbAsteroids null';
-delete from stats where idUser = 1;
+
+CALL test_null_nbDeaths(@test);
+SELECT @test AS 'nbDeaths null';
 
 CALL test_null_nbPoints(@test);
 SELECT @test AS 'nbPoints null';
@@ -123,6 +129,9 @@ SELECT @test AS 'nbGames greater0';
 CALL test_greater0_nbAsteroids(@test);
 SELECT @test AS 'nbAsteroids greater0';
 
+CALL test_greater0_nbDeaths(@test);
+SELECT @test AS 'nbDeaths greater0';
+
 CALL test_greater0_nbPoints(@test);
 SELECT @test AS 'nbPoints greater0';
 
@@ -146,10 +155,12 @@ SELECT @test AS 'maxPoints greater0';
 
 
 /*--------------------------------*/
+/*
+SELECT 'Procedures' AS 'Testing';
 
-/*SELECT 'Procedures' AS 'Testing';
+CALL test_clean_tables();
+ */
 
-CALL test_clean_tables();*/
 
 /*--------------------------------*/
 SELECT 'Triggers' AS 'Testing';
@@ -168,5 +179,6 @@ SELECT @test AS 'dateBan update';
 CALL test_trigger_stats_update();
 
 CALL test_trigger_newBan();
+
 
 SELECT 'Test process ' AS 'Ending';

@@ -85,7 +85,6 @@ BEGIN
     SET NEW.maxPoints = maxP; 
     SET NEW.maxPowerUps = maxPU; 
     SET NEW.maxDeaths = maxD;
-
 END;
 //
 
