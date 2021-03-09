@@ -1,27 +1,32 @@
 /*
- Test p_clean_tables : supprime les lignes dont les date d'expiration de token et de fin de ban sont expirées
- Important : les triggers i_users et i_tokens NE doivent PAS exister
+ Test p_clean_tables : supprime les lignes dont les dates d'expiration de token et de fin de ban sont expirées
+ Les triggers i_bans et i_tokens NE doivent PAS exister
  */
 
-/* Utilsateur de test */
-INSERT INTO users (idUser, username, pwd, email)
-VALUES (1, 'username', 'pwd', 'email@email.email');
+DROP TRIGGER IF EXISTS i_bans;
+DROP TRIGGER IF EXISTS i_tokens;
 
-INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
-VALUES (1, 1, 'strToken', SUBDATE(NOW(), INTERVAL 2 DAY));
-INSERT INTO bans (idUser, banEnd)
-VALUES (1, SUBDATE(NOW(), INTERVAL 2 DAY));
+DELIMITER //
+CREATE OR REPLACE PROCEDURE test_clean_tables()
+BEGIN
+    START TRANSACTION;
 
-CALL p_clean_tables();
+    SAVEPOINT S1;
 
-SELECT *
-FROM bans
-WHERE idUser = 1;
-SELECT *
-FROM tokens
-WHERE idUser = 1;
+    INSERT INTO users (idUser, username, pwd, email)
+    VALUES (1, 'username', 'pwd', 'email@email.email');
 
-/* Suppression utilisateur de test */
-DELETE
-FROM users
-WHERE idUser = 1;
+    INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
+    VALUES (1, 1, 'strToken', SUBDATE(NOW(), INTERVAL 2 DAY));
+
+    INSERT INTO bans (idUser, banEnd)
+    VALUES (1, SUBDATE(NOW(), INTERVAL 2 DAY));
+
+    CALL p_clean_tables();
+
+    SELECT IF ((SELECT COUNT(*) FROM bans WHERE idUser = 1),'Test clean tables bans : FAIL','Test clean tables bans: OK');
+    SELECT IF ((SELECT COUNT(*)  FROM tokens WHERE idUser = 1),'Test clean tables tokens : FAIL','Test clean tables tokens: OK');
+
+    ROLLBACK TO S1;
+END;
+//
