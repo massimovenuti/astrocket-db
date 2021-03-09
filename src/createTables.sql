@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT PK_users PRIMARY KEY (idUser),
     CONSTRAINT UC_users_username UNIQUE (username),
     CONSTRAINT UC_users_email UNIQUE (email),
-    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z.][a-zA-Z0-9.]{1,39}$'),
+    CONSTRAINT CK_users_username CHECK (username REGEXP '^[a-zA-Z][a-zA-Z0-9]{1,39}$'),
     CONSTRAINT CK_users_email CHECK (email REGEXP '^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'),
     CONSTRAINT CK_users_role CHECK (role IN ('A', 'U'))
 );
