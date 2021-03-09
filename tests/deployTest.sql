@@ -1,7 +1,7 @@
-source ./testTriggers.sql
-source ./testProcedures.sql
-source ./testConstraints.sql
+source ./tests/testTriggers.sql
+source ./tests/testProcedures.sql
+source ./tests/testConstraints.sql
 
-source ./testAuto.sql
+source ./tests/testAuto.sql
 
-source ./dropTestProcedures.sql
+source ./tests/dropTestProcedures.sql
