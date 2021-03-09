@@ -26,3 +26,11 @@ VALUES (7, 'admin2', 'pwd', 'email7@email.email', 'A');
 
 INSERT INTO users (idUser, username, pwd, email, role)
 VALUES (8, 'admin3', 'pwd', 'email8@email.email', 'A');
+
+/* Insertion de tokens */
+
+INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
+VALUES (1, 1, "user1", "2022-02-06");
+
+INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
+VALUES (2, 6, "admin1", "2022-02-06");

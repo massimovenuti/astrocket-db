@@ -5,3 +5,7 @@
 DELETE
 FROM users
 WHERE username LIKE 'user%' OR username LIKE 'admin%';
+
+DELETE
+FROM tokens
+WHERE idToken = 1 OR idToken = 2;
