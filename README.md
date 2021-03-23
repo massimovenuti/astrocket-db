@@ -29,7 +29,7 @@ source deployTest.sql
 ### Test des APIs
 
 Pour insérer des données pour tester l'API d'authentification :
-Ouvrez un terminal dans le répertoire `tests`
+Ouvrez un terminal dans le répertoire `tests/API_Auth`
 
 ```
 [sudo] mariadb
@@ -38,7 +38,7 @@ source insertDataUsers.sql
 ```
 
 Pour insérer des données pour tester l'API de statistiques :
-Ouvrez un terminal dans le répertoire `tests`
+Ouvrez un terminal dans le répertoire `tests/API_Stats`
 
 ```
 [sudo] mariadb
@@ -47,7 +47,7 @@ source insertDataStats.sql
 ```
 
 Pour insérer des données pour tester le big Main server :
-Ouvrez un terminal dans le répertoire `tests`
+Ouvrez un terminal dans le répertoire `tests/Big_Main`
 
 ```
 [sudo] mariadb
@@ -57,7 +57,7 @@ source insertDataMain.sql
 
 
 Pour supprimer les données de test de l'API d'authentification :
-Ouvrez un terminal dans le répertoire `tests`
+Ouvrez un terminal dans le répertoire `tests/API_Auth`
 
 ```
 [sudo] mariadb
@@ -66,7 +66,7 @@ source dropDataUsers.sql
 ```
 
 Pour supprimer des données pour tester l'API de statistiques :
-Ouvrez un terminal dans le répertoire `tests`
+Ouvrez un terminal dans le répertoire `tests/API_Stats`
 
 ```
 [sudo] mariadb
@@ -75,7 +75,7 @@ source dropDataStats.sql
 ```
 
 Pour supprimer des données pour tester le big Main server :
-Ouvrez un terminal dans le répertoire `tests`
+Ouvrez un terminal dans le répertoire `tests/Big_Main`
 
 ```
 [sudo] mariadb
