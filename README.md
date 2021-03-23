@@ -46,6 +46,16 @@ USE AWBDD
 source insertDataStats.sql
 ```
 
+Pour insérer des données pour tester le big Main server :
+Ouvrez un terminal dans le répertoire `tests`
+
+```
+[sudo] mariadb
+USE AWBDD
+source insertDataMain.sql
+```
+
+
 Pour supprimer les données de test de l'API d'authentification :
 Ouvrez un terminal dans le répertoire `tests`
 
@@ -55,11 +65,20 @@ USE AWBDD
 source dropDataUsers.sql
 ```
 
-Pour insérer des données pour tester l'API de statistiques :
+Pour supprimer des données pour tester l'API de statistiques :
 Ouvrez un terminal dans le répertoire `tests`
 
 ```
 [sudo] mariadb
 USE AWBDD
 source dropDataStats.sql
+```
+
+Pour supprimer des données pour tester le big Main server :
+Ouvrez un terminal dans le répertoire `tests`
+
+```
+[sudo] mariadb
+USE AWBDD
+source dropDataMain.sql
 ```
