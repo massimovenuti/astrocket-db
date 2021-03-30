@@ -14,7 +14,7 @@ INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
 VALUES (1, 1, "user1", "2022-02-06");
 
 INSERT INTO tokens (idToken, idUser, strToken, expirationDate)
-VALUES (2, 6, "admin1", "2022-02-06");
+VALUES (2, 2, "admin1", "2022-02-06");
 
 /* Insertion d'un serveur */
 INSERT INTO servers (idServer, serverName, serverToken)
