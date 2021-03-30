@@ -21,7 +21,7 @@ INSERT INTO servers (idServer, serverName, serverToken)
 VALUES (1, "Orion", "servOrion");
 
 INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (2, "Andromède", "servAndromède");
+VALUES (2, "Andromede", "servAndromede");
 
 INSERT INTO servers (idServer, serverName, serverToken)
-VALUES (3, "Pégase", "servPégase");
+VALUES (3, "Pegase", "servPegase");
